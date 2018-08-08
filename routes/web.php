@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('revalidate');
+Route::get('/home/changepassword', 'ChangePasswordController@show')->middleware('revalidate');
+Route::post('/home/changepassword', 'ChangePasswordController@validatepassword')->middleware('revalidate');

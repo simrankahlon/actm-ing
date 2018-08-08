@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="ACAT - Atos Cloud Assesment Tool">
-    <meta name="author" content="Anurag Joshi">
-    <meta name="keyword" content="Cloud,Assesment,Tool, PaaS, IaaS">
+    <meta name="description" content="Ingenious ACTM">
+    <meta name="author" content="Simran Kahlon">
+    <meta name="keyword" content="Ingenious ACTM">
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('img/chosen-sprite.png') }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Atos Cloud Assesment Tool : ACAT</title>
+    <title>Ingenious ACTM</title>
 
     <!-- Icons -->
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
@@ -59,7 +59,7 @@
                     <a class="nav-link navbar-toggler layout-toggler" href="#">☰</a>
                 </li>
                 <li class="nav-item px-1">
-                    <a class="nav-link" href="{{ url('/') }}">CLOUD ASSESSMENT TOOL</a>
+                    <a class="nav-link" href="{{ url('/') }}">Ingenious ACTM</a>
                 </li>
                 
             </ul>
@@ -74,9 +74,6 @@
                             <strong>Settings</strong>
                         </div>
                         <a class="dropdown-item" href="{{url('/home/changepassword')}}"><i class="fa fa-user"></i> Change Password</a>
-                        <a class="dropdown-item" href="{{url('/switchclient')}}"><i class="fa fa-user"></i>Switch Client</a>
-                        
-                        <!--<a class="dropdown-item" href="{{ url('/logout') }}"><i class="fa fa-lock"></i> Logout</a>-->
                         <a class="dropdown-item" href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

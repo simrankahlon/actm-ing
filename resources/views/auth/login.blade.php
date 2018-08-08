@@ -11,7 +11,7 @@
                         {{ csrf_field() }}    
                             <div class="card-block">
                                 <div align="center"><img src="{{ asset('img/logoforpdf.jpg') }}" alt="Logo" align="center"></div>
-                                <strong>ACAT Login</strong>
+                                <strong>Ingenious ACTM</strong>
                                 <p class="text-muted">Sign In to your account</p>
 
                                 <div class="input-group mb-1">
@@ -42,10 +42,11 @@
                                     </div>
                                 @endif
                                 <div class="row">
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-8">
                                         <button type="submit" class="btn btn-primary px-2">Login</button>
+                                        <a href="{{ url('/') }}" class="btn btn-default">Cancel</a>
                                     </div>
-                                    <div class="col-xs-6 text-xs-right">
+                                    <div class="col-xs-4 text-xs-right">
                                         <a class="btn btn-link px-0" href="{{ url('/password/reset') }}">Forgot password?</a>
                                         
                                     </div>
@@ -56,7 +57,7 @@
                         <div class="card card-inverse card-primary py-3 hidden-md-down" style="width:44%">
                             <div class="card-block text-xs-center">
                                 <div>
-                                    <h2>ACAT</h2>
+                                    <h2>Ingenious ACTM</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                     <!--<button type="button" class="btn btn-primary active mt-1">Register Now!</button>-->
                                 </div>
