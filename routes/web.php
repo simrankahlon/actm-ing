@@ -35,6 +35,17 @@ Route::get('/posts','PostsController@list')->middleware('revalidate');
 Route::get('/posts/{post}/edit','PostsController@edit')->middleware('revalidate');
 Route::post('/posts/{post}/edit','PostsController@update')->middleware('revalidate');
 
-
+//Delete Post Functionality
 Route::get('/posts/{post}/delete','PostsController@delete')->middleware('revalidate');
+
+//View individual comment of user posts.
+Route::get('/posts/{post}/comments','PostsController@viewComments')->middleware('revalidate');
+
+//Add Comments.
+Route::get('/ajax/comment/{comment}','CommentController@viewComment')->middleware('revalidate');
+Route::post('/ajax/comment/{post}','CommentController@addComment')->middleware('revalidate');
+
+
+
+
 

@@ -72,5 +72,10 @@ class PostsController extends Controller
         
     }
 
+    public function viewComments(Post $post)
+    {
+        return view('posts.viewcomments',compact('post'));
+    }
+
 
 }

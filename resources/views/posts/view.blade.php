@@ -21,8 +21,7 @@
                                 <table class="table table-hover table-outline mb-0 hidden-sm-down">
                                             <thead class="thead-default">
                                                 <tr>
-                                                   
-                                                    <th>Post Title</th>
+                                                    <th>Title</th>
                                                     <th>Description</th>
                                                     <th>Activity</th>
                                                     <th><div class="float-xs-right">Action</div></th>
@@ -52,6 +51,7 @@
                                                     <div class="float-xs-right">
                                                         <button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
                                                         <button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
+                                                        <button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">Comments</button>
                                                     </div>
                                                 </td>
                                             </tr>

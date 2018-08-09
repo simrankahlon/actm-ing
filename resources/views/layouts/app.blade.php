@@ -8,7 +8,6 @@
     <meta name="author" content="Simran Kahlon">
     <meta name="keyword" content="Ingenious ACTM">
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('img/chosen-sprite.png') }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -22,9 +21,7 @@
     <!-- Main styles for this application -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet">
-
+    
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -112,10 +109,15 @@
     <!--/Footer-->
 
     <!-- Bootstrap and necessary plugins -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('bower_components/tether/dist/js/tether.min.js') }}"></script>
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bower_components/pace/pace.min.js') }}"></script>
+    
+    
+    
+    
 
 
     <!-- Plugins and scripts required by all views -->
@@ -124,8 +126,7 @@
     <!-- GenesisUI main scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
-    <script src="{{ asset('js/dropzone.js') }}"></script>
-    <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+    
 
     @if($flash = session('message'))
     <script>
@@ -137,6 +138,8 @@
     toastr.info('{{$flash}}');
     </script>
     @endif
+    @yield('modalfun')
     @yield('javascriptfunctions')
+    
 </body>
 </html>
