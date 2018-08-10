@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Post;
+use App\Comment;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user=Auth::user();
+        $user_count=User::count();
+        $post_count=Post::count();
+        $comment_count=Comment::count();
+        $mypost_count=Post::where('user_id',$user->id)->count();
+
+        //Top % Posts
+        $posts=Post::orderBy('updated_at','desc')->limit(5)->get();
+
+        return view('home',compact('user_count','post_count','comment_count','mypost_count','posts'));
     }
 }

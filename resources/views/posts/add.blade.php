@@ -27,11 +27,21 @@
                 <textarea name ="description" class="form-control" id="description" placeholder="Description">{{old('description')}}</textarea>
                 <span style="color:red">{{ $errors->first('description') }}</span>
             </div>
+
+            <div class="form-group col-md-12">
+                <label for="tag_users" style="margin-top:15px;">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
+                <select id="tag_users" name="tag_users[]" multiple="multiple" data-placeholder="Please Select" class="form-control chosen-select">
+                    @foreach($users as $user)
+                        <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+
         </div>
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ old('page') }}" class="btn btn-default">Cancel</a> 
+            <a href="{{ url('posts') }}" class="btn btn-default">Cancel</a> 
         </div>                      
     </form>
 </div>

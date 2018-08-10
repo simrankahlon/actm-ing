@@ -35,8 +35,6 @@ class CommentController extends Controller
     		$comment->comment=$request->comment;
     		$comment->update();
     	}
-    	
-
     	return \Response::json($comment);
     }
 }

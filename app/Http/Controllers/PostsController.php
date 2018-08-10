@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use Auth;
+use App\User;
 
 class PostsController extends Controller
 {
     
     public function create()
     {
-       	
-       	return view('posts.add');
-    
+       $user=Auth::user();
+       $users=User::where('id','<>',$user->id)->get();
+       return view('posts.add',compact('users'));
     }
 
     public function store(Request $request)
@@ -37,7 +38,7 @@ class PostsController extends Controller
 
     public function list()
     {
-    	$posts=Post::paginate(50);
+    	$posts=Post::orderBy('updated_at','desc')->paginate(50);
     	return view('posts.view',compact('posts'));
     }
 

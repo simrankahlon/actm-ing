@@ -1,14 +1,180 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Dashboard
+    </li>
+    <li class="breadcrumb-menu">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Post </a>
+        </div>
+    </li>
+</ol>
+@endsection
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                </div>
+<div class="card-group">
+    <div class="card">
+        <div class="card-block">
+            <div class="h1 text-muted text-xs-right mb-2">
+                <i class="icon-user-follow"></i>
             </div>
+            <div class="h4 mb-0">{{$user_count}}</div>
+            <small class="text-muted text-uppercase font-weight-bold">Users</small>
+            <progress class="progress progress-xs progress-success mt-1 mb-0" value="25" max="100">25%</progress>
         </div>
     </div>
+    <div class="card">
+        <div class="card-block">
+            <div class="h1 text-muted text-xs-right mb-2">
+                <i class="icon-bubbles"></i>
+            </div>
+            <div class="h4 mb-0">{{$post_count}}</div>
+            <small class="text-muted text-uppercase font-weight-bold">Posts</small>
+            <progress class="progress progress-xs progress-primary mt-1 mb-0" value="25" max="100">25%</progress>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-block">
+            <div class="h1 text-muted text-xs-right mb-2">
+                <i class="icon-speech"></i>
+            </div>
+            <div class="h4 mb-0">{{$comment_count}}</div>
+            <small class="text-muted text-uppercase font-weight-bold">Comments</small>
+            <progress class="progress progress-xs progress-warning mt-1 mb-0" value="25" max="100">25%</progress>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-block">
+            <div class="h1 text-muted text-xs-right mb-2">
+                <i class="icon-bubble"></i>
+            </div>
+            <div class="h4 mb-0">{{$mypost_count}}</div>
+            <small class="text-muted text-uppercase font-weight-bold">My Posts</small>
+            <progress class="progress progress-xs progress-danger mt-1 mb-0" value="25" max="100">25%</progress>
+        </div>
+    </div>
+</div>
+
+
+<h5 class="nav-item" style="color:#737373">Recent Tag Posts</h5>
+<div class="card">
+    <table class="table table-hover table-outline mb-0 hidden-sm-down">
+        <thead class="thead-default">
+            <tr>
+                <th class="text-xs-center"><i class="icon-people"></i>
+                <th>User</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Activity</th>
+                <th><div class="float-xs-right">Action</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($posts as $post)
+            	<tr>
+                	<td class="text-xs-center">
+                    	<div class="avatar">
+                        	<img src="{{ asset('img/user-icon.png') }}" class="img-avatar" alt="Client Logo">
+                    	</div>
+                	</td>
+                	<td>
+                    	<div>
+                        	<strong><a href="#">{{App\Post::userName($post->user_id)}}</a></strong>
+                    	</div>
+                	</td>
+                	<td>
+                		<div class="float-xs-left">
+                        	<a href="#">{{$post->title}}</a>
+                		</div>
+                 	</td>
+                 	<td>
+                  		<div class="float-xs-left text-muted">
+                            <strong>{{$post->description}}</strong>
+                        </div>
+                 	</td>
+					<td>
+                 		<div class="float-xs-left">
+                    		<strong>
+                        		{{ $post->updated_at->diffForHumans()}}
+                    		</strong>                                               
+                 		</div>
+                 	</td>
+                	<td>
+                    	<div class="float-xs-right">
+                        	@php
+                            	$user_id=Auth::user()->id;
+                        	@endphp
+                        	@if($post->user_id == $user_id)
+                            	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
+                            	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
+                        	@endif
+                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">Comment</button>
+                    	</div>
+                	</td>
+            	</tr>
+           @endforeach
+        </tbody>
+     </table>
+</div>
+
+<h5 class="nav-item" style="color:#737373">Recent Posts</h5>
+<div class="card">
+    <table class="table table-hover table-outline mb-0 hidden-sm-down">
+        <thead class="thead-default">
+            <tr>
+                <th class="text-xs-center"><i class="icon-people"></i>
+                <th>User</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Activity</th>
+                <th><div class="float-xs-right">Action</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($posts as $post)
+            	<tr>
+                	<td class="text-xs-center">
+                    	<div class="avatar">
+                        	<img src="{{ asset('img/user-icon.png') }}" class="img-avatar" alt="Client Logo">
+                    	</div>
+                	</td>
+                	<td>
+                    	<div>
+                        	<strong><a href="#">{{App\Post::userName($post->user_id)}}</a></strong>
+                    	</div>
+                	</td>
+                	<td>
+                		<div class="float-xs-left">
+                        	<a href="#">{{$post->title}}</a>
+                		</div>
+                 	</td>
+                 	<td>
+                  		<div class="float-xs-left text-muted">
+                            <strong>{{$post->description}}</strong>
+                        </div>
+                 	</td>
+					<td>
+                 		<div class="float-xs-left">
+                    		<strong>
+                        		{{ $post->updated_at->diffForHumans()}}
+                    		</strong>                                               
+                 		</div>
+                 	</td>
+                	<td>
+                    	<div class="float-xs-right">
+                        	@php
+                            	$user_id=Auth::user()->id;
+                        	@endphp
+                        	@if($post->user_id == $user_id)
+                            	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
+                            	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
+                        	@endif
+                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">Comment</button>
+                    	</div>
+                	</td>
+            	</tr>
+           @endforeach
+        </tbody>
+     </table>
 </div>
 @endsection
