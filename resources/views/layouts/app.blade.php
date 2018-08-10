@@ -122,11 +122,12 @@
 
     <!-- Plugins and scripts required by all views -->
     <script src="{{ asset('bower_components/chart.js/dist/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+
     
     <!-- GenesisUI main scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
+    <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
     
 
     @if($flash = session('message'))
