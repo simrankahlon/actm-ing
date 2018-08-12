@@ -33,9 +33,16 @@ class HomeController extends Controller
         $comment_count=Comment::count();
         $mypost_count=Post::where('user_id',$user->id)->count();
 
+        $tag_posts=Post::join('post_user','posts.id','=','post_user.post_id')
+                         ->select('posts.*')
+                         ->where('post_user.user_id',$user->id)
+                         ->limit(5)
+                         ->get();
+
+        
         //Top % Posts
         $posts=Post::orderBy('updated_at','desc')->limit(5)->get();
 
-        return view('home',compact('user_count','post_count','comment_count','mypost_count','posts'));
+        return view('home',compact('user_count','post_count','comment_count','mypost_count','posts','tag_posts'));
     }
 }

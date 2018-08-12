@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsUsersTable extends Migration
+class CreatePostUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePostsUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts_users', function (Blueprint $table) {
+        Schema::create('post_user', function (Blueprint $table) {
             $table->primary(['post_id','user_id']);
             $table->integer('post_id')->unsigned()->index();
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

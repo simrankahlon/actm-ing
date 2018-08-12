@@ -12,6 +12,9 @@
 </ol>
 @endsection
 @section('content')
+    @php
+        $user_id=Auth::user()->id;
+    @endphp
 <div class="card-group">
     <div class="card">
         <div class="card-block">
@@ -56,7 +59,7 @@
 </div>
 
 
-<h5 class="nav-item" style="color:#737373">Recent Tag Posts</h5>
+<h5 class="nav-item" style="color:#737373">Recently Tagged</h5>
 <div class="card">
     <table class="table table-hover table-outline mb-0 hidden-sm-down">
         <thead class="thead-default">
@@ -64,13 +67,12 @@
                 <th class="text-xs-center"><i class="icon-people"></i>
                 <th>User</th>
                 <th>Title</th>
-                <th>Description</th>
                 <th>Activity</th>
                 <th><div class="float-xs-right">Action</div></th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($posts as $post)
+            @foreach ($tag_posts as $post)
             	<tr>
                 	<td class="text-xs-center">
                     	<div class="avatar">
@@ -88,11 +90,6 @@
                 		</div>
                  	</td>
                  	<td>
-                  		<div class="float-xs-left text-muted">
-                            <strong>{{$post->description}}</strong>
-                        </div>
-                 	</td>
-					<td>
                  		<div class="float-xs-left">
                     		<strong>
                         		{{ $post->updated_at->diffForHumans()}}
@@ -108,7 +105,7 @@
                             	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
                             	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
                         	@endif
-                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">Comment</button>
+                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">View</button>
                     	</div>
                 	</td>
             	</tr>
@@ -125,8 +122,8 @@
                 <th class="text-xs-center"><i class="icon-people"></i>
                 <th>User</th>
                 <th>Title</th>
-                <th>Description</th>
                 <th>Activity</th>
+                <th>Tagged</th>
                 <th><div class="float-xs-right">Action</div></th>
             </tr>
         </thead>
@@ -134,8 +131,11 @@
             @foreach ($posts as $post)
             	<tr>
                 	<td class="text-xs-center">
+                        @if(App\Post::checkIfTagged($post))
+                            <strong><i class="icon-tag"></i></strong>
+                        @endif
                     	<div class="avatar">
-                        	<img src="{{ asset('img/user-icon.png') }}" class="img-avatar" alt="Client Logo">
+                            <img src="{{ asset('img/user-icon.png') }}" class="img-avatar" alt="Client Logo">
                     	</div>
                 	</td>
                 	<td>
@@ -149,27 +149,37 @@
                 		</div>
                  	</td>
                  	<td>
-                  		<div class="float-xs-left text-muted">
-                            <strong>{{$post->description}}</strong>
-                        </div>
-                 	</td>
-					<td>
                  		<div class="float-xs-left">
                     		<strong>
                         		{{ $post->updated_at->diffForHumans()}}
                     		</strong>                                               
                  		</div>
                  	</td>
+                    <td>
+                        <div class="float-xs-left">
+                            @php
+                                $user_name = array();
+                                $users=App\Post::getTaggedUsers($post);
+                                foreach($users as $user)
+                                {
+                                    $user_name[] = $user->name;
+                                }
+                                $user_array = implode(',', $user_name);
+                            @endphp
+                            @if(empty($user_array))
+                                <div class="float-xs-left text-muted"><strong>-</strong></div>
+                            @else
+                                <div class="float-xs-left text-muted"><strong>{{$user_array}}</strong></div>
+                            @endif
+                        </div>
+                    </td>
                 	<td>
                     	<div class="float-xs-right">
-                        	@php
-                            	$user_id=Auth::user()->id;
-                        	@endphp
                         	@if($post->user_id == $user_id)
                             	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
                             	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
                         	@endif
-                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">Comment</button>
+                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">View</button>
                     	</div>
                 	</td>
             	</tr>

@@ -21,6 +21,8 @@
     <!-- Main styles for this application -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/chosen.min.css') }}" type="text/css" rel="stylesheet">
+
     
     <!-- Scripts -->
     <script>

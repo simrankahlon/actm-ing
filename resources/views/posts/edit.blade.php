@@ -27,15 +27,50 @@
                 <textarea name ="description" class="form-control" id="description" placeholder="Description">{{$post->description}}</textarea>
                 <span style="color:red">{{ $errors->first('description') }}</span>
             </div>
+
+            <div class="form-group">
+                <label for="tag_users">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
+                <select id="tag_users" name="tag_users[]" multiple="multiple" data-placeholder="Please Select" class="form-control chosen-select">
+                    @php
+                        $found = 0;
+                    @endphp
+                        
+                    @foreach($users as $user)
+                        @foreach($post->users as $selecteduser)
+                            @if($user->id == $selecteduser->id)
+                                @php
+                                    $found = 1;
+                                @endphp
+                            @endif  
+                        @endforeach     
+                        
+                        @if($found == 1)
+                            <option value="{{$user->id}}" selected="">{{$user->name}}</option>
+                        @else
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endif
+
+                        @php
+                            $found=0;
+                        @endphp        
+                    @endforeach
+                </select>
+            </div>
         </div>
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ old('page') }}" class="btn btn-default">Cancel</a> 
+            <a href="{{ url('posts') }}" class="btn btn-default">Cancel</a>
         </div>                      
     </form>
 </div>
 @endsection
-
-
+@section('javascriptfunctions')
+<script type="text/javascript"> 
+$(document).ready(function() {
+  $(".chosen-select").chosen({width: "100%"});
+  
+});
+</script>
+@endsection
 

@@ -29,8 +29,9 @@ class PostsController extends Controller
     	$post->user_id=$user->id;
     	$post->title=request('post_title');
     	$post->description=request('description');
-
-    	$post->save();
+        $post->save();
+        $post->users()->sync($request->tag_users);
+        
     	session()->flash('message','Post added successfully!');
     	
     	return(redirect('/posts'));
@@ -44,7 +45,9 @@ class PostsController extends Controller
 
     public function edit(Post $post)
     {
-    	return view('posts.edit',compact('post'));
+    	$user=Auth::user();
+        $users=User::where('id','<>',$user->id)->get();
+        return view('posts.edit',compact('post','users'));
     }
 
     public function update(Post $post, Request $request)
@@ -58,8 +61,8 @@ class PostsController extends Controller
     	$post->user_id=$user->id;
     	$post->title=request('post_title');
     	$post->description=request('description');
-
-    	$post->save();
+        $post->update();
+        $post->users()->sync($request->tag_users);
     	session()->flash('message','Post updated successfully!');
     	
     	return(redirect('/posts'));

@@ -18,7 +18,7 @@
         <div class="card-block">
             <div class="form-group">
                 <label for="post_title">Post Title</label> <span style="color:red">*</span>
-                <input name ="post_title" type="text" class="form-control" id="name" placeholder="Post title" value={{ old('post_title') }}>
+                <input name ="post_title" type="text" class="form-control" id="name" placeholder="Post title" value="{{ old('post_title') }}">
                 <span style="color:red">{{ $errors->first('post_title') }}</span>
             </div>
                             
@@ -27,9 +27,9 @@
                 <textarea name ="description" class="form-control" id="description" placeholder="Description">{{old('description')}}</textarea>
                 <span style="color:red">{{ $errors->first('description') }}</span>
             </div>
-
-            <div class="form-group col-md-12">
-                <label for="tag_users" style="margin-top:15px;">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
+            
+            <div class="form-group">
+                <label for="tag_users">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
                 <select id="tag_users" name="tag_users[]" multiple="multiple" data-placeholder="Please Select" class="form-control chosen-select">
                     @foreach($users as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
@@ -46,6 +46,15 @@
     </form>
 </div>
 @endsection
+@section('javascriptfunctions')
+<script type="text/javascript"> 
+$(document).ready(function() {
+  $(".chosen-select").chosen({width: "100%"});
+  
+});
+</script>
+@endsection
+
 
 
 

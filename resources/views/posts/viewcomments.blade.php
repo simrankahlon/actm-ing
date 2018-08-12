@@ -16,7 +16,8 @@
 
 @section('content')
 @php
-    $url= url("/");                                               
+    $url= url("/");
+    $user_id=Auth::user()->id;                                               
 @endphp
 <input type="hidden"  value="{{$url}}" id="url"/>
         <div class="card">
@@ -25,14 +26,27 @@
                     <i class="icon-bubbles"></i> 
                     {{$post->title}}
                 </h3>
+                <div class="col-md-2">
+                    <i class="icon-user"></i>&nbsp;&nbsp;
+                    <small class="text-info">{{App\Post::userName($post->user_id)}}</small>
+                </div>
+                <div class="col-md-3">
+                        @php
+                            $user_name = array();
+                            $users=App\Post::getTaggedUsers($post);
+                            foreach($users as $user)
+                            {
+                                $user_name[] = $user->name;
+                            }
+                            $user_array = implode(',', $user_name);
+                        @endphp
+                        <i class="icon-tag"></i>&nbsp;&nbsp;<small class="text-info">{{$user_array}}</small>
+                </div>
             </div>
             <div class="card-block" id="comment-list">
                 <div class="form-group">
                     <p>{{$post->description}}</p>
                     @foreach($post->comments as $comment)
-                        @php
-                            $user_id=Auth::user()->id;
-                        @endphp
                         @if($comment->user_id == $user_id)
                             <div class="alert alert-info" role="alert">
                                 <div class="text-xs-left">
@@ -49,8 +63,6 @@
                                             <button type="button" value="{{$comment->id}}" class="btn btn-link edit-commentbox" style="color:black;">Edit</button>
                                             <button type="button" value="{{$comment->id}}" class="btn btn-link delete-commentbox" style="color:red;">Delete</button>
                                             </div>
-                                            <!-- <button type="button" value="{{$comment->id}}" class="btn btn-block btn-link edit-commentbox">Edit</button>
-                                            <button type="button" value="{{$comment->id}}" class="btn btn-block btn-link edit-commentbox">Delete</button> -->
                                         </div>
                                     </div>
                                 </div>
