@@ -61,7 +61,7 @@
                                         <div class="col-md-2">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                             <button type="button" value="{{$comment->id}}" class="btn btn-link edit-commentbox" style="color:black;">Edit</button>
-                                            <button type="button" value="{{$comment->id}}" class="btn btn-link delete-commentbox" style="color:red;">Delete</button>
+                                            <button type="button" value="{{$comment->id}}" class="btn btn-link" style="color:red;" onclick="javascript:confirmDelete('{{ url('/comments/'.$comment->id.'/delete') }}')">Delete</button>
                                             </div>
                                         </div>
                                     </div>
@@ -118,6 +118,15 @@
 
 @section('javascriptfunctions')
 <script>
+
+function confirmDelete(delUrl) 
+{
+  if (confirm("Are you sure you want to Delete?")) 
+  {
+    document.location = delUrl;
+  }
+}
+
 $(document).ready(function()
 {
     $('#comment-list').on('click', '.open-commentbox',function()

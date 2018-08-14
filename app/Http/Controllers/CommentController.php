@@ -37,4 +37,12 @@ class CommentController extends Controller
     	}
     	return \Response::json($comment);
     }
+
+    public function deleteComment(Comment $comment)
+    {
+        $comment->delete();
+        session()->flash('message','Comment deleted Successfully');
+        return back();
+    }
+
 }

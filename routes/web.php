@@ -46,6 +46,9 @@ Route::get('/ajax/comment/{comment}','CommentController@viewComment')->middlewar
 Route::post('/ajax/comment/{post}','CommentController@addComment')->middleware('revalidate');
 
 
+//Delete Comment
+Route::get('comments/{comment}/delete','CommentController@deleteComment')->middleware('revalidate');
+
 
 
 
