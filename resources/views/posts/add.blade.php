@@ -3,7 +3,7 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
    <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-   <li class="breadcrumb-item"><a href="{{ url('/posts') }}">Posts</a></li>
+   <li class="breadcrumb-item"><a href="{{ url('/posts') }}">Ideas</a></li>
    <li class="breadcrumb-item active">Add Post</li>
 </ol>
 @endsection
@@ -13,19 +13,19 @@
     <form action="{{ url('/posts/create') }}" method="post">
         {{ csrf_field() }}
         <div class="card-header">
-            <strong>New Post</strong>
+            <strong>New Idea</strong>
         </div>
         <div class="card-block">
             <div class="form-group">
-                <label for="post_title">Post Title</label> <span style="color:red">*</span>
-                <input name ="post_title" type="text" class="form-control" id="name" placeholder="Post title" value="{{ old('post_title') }}">
+                <label for="title">Title</label> <span style="color:red">*</span>
+                <input name ="title" type="text" class="form-control" id="name" placeholder="Title" value="{{ old('title') }}">
                 <span style="color:red">{{ $errors->first('post_title') }}</span>
             </div>
                             
             <div class="form-group">
-                <label for="description">Description</label> <span style="color:red">*</span>
-                <textarea name ="description" class="form-control" id="description" placeholder="Description">{{old('description')}}</textarea>
-                <span style="color:red">{{ $errors->first('description') }}</span>
+                <label for="details">Details</label> <span style="color:red">*</span>
+                <textarea name ="details" class="form-control" id="details" placeholder="Details">{{old('details')}}</textarea>
+                <span style="color:red">{{ $errors->first('details') }}</span>
             </div>
             
             <div class="form-group">

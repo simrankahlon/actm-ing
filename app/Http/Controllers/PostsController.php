@@ -21,14 +21,14 @@ class PostsController extends Controller
     {
     	$user=Auth::user();
     	$this->validate($request,[
-    	      'post_title' => 'required',
-    	      'description' =>'required',
+    	      'title' => 'required',
+    	      'details' =>'required',
     	      ]);
 
     	$post = new Post;
     	$post->user_id=$user->id;
-    	$post->title=request('post_title');
-    	$post->description=request('description');
+    	$post->title=request('title');
+    	$post->description=request('details');
         $post->save();
         $post->users()->sync($request->tag_users);
         
@@ -54,13 +54,13 @@ class PostsController extends Controller
     {
     	$user=Auth::user();
     	$this->validate($request,[
-    	      'post_title' => 'required',
-    	      'description' =>'required',
+    	      'title' => 'required',
+    	      'details' =>'required',
     	      ]);
 
     	$post->user_id=$user->id;
-    	$post->title=request('post_title');
-    	$post->description=request('description');
+    	$post->title=request('title');
+    	$post->description=request('details');
         $post->update();
         $post->users()->sync($request->tag_users);
     	session()->flash('message','Post updated successfully!');

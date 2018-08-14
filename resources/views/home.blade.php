@@ -6,7 +6,7 @@
     </li>
     <li class="breadcrumb-menu">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Post </a>
+            <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Ideas </a>
         </div>
     </li>
 </ol>
@@ -32,7 +32,7 @@
                 <i class="icon-bubbles"></i>
             </div>
             <div class="h4 mb-0">{{$post_count}}</div>
-            <small class="text-muted text-uppercase font-weight-bold">Posts</small>
+            <small class="text-muted text-uppercase font-weight-bold">Ideas</small>
             <progress class="progress progress-xs progress-primary mt-1 mb-0" value="25" max="100">25%</progress>
         </div>
     </div>
@@ -52,7 +52,7 @@
                 <i class="icon-bubble"></i>
             </div>
             <div class="h4 mb-0">{{$mypost_count}}</div>
-            <small class="text-muted text-uppercase font-weight-bold">My Posts</small>
+            <small class="text-muted text-uppercase font-weight-bold">My Ideas</small>
             <progress class="progress progress-xs progress-danger mt-1 mb-0" value="25" max="100">25%</progress>
         </div>
     </div>
@@ -114,7 +114,7 @@
      </table>
 </div>
 
-<h5 class="nav-item" style="color:#737373">Recent Posts</h5>
+<h5 class="nav-item" style="color:#737373">Recent Ideas</h5>
 <div class="card">
     <table class="table table-hover table-outline mb-0 hidden-sm-down">
         <thead class="thead-default">

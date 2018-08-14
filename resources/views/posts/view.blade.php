@@ -3,11 +3,11 @@
 <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
            
-            <li class="breadcrumb-item active">Posts</li>
+            <li class="breadcrumb-item active">Ideas</li>
             <li class="breadcrumb-menu">
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                     
-                    <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Post </a>
+                    <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Idea </a>
                 </div>
             </li>
            
