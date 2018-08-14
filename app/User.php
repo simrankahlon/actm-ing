@@ -27,9 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function posts()
+    public function ideas()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Idea::class);
     }
 
     public function comments()

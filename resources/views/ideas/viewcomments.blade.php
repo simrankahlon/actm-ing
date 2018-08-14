@@ -3,11 +3,11 @@
 <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
            
-            <li class="breadcrumb-item"><a href="{{ url('/posts') }}">Ideas</a></li>
+            <li class="breadcrumb-item"><a href="{{ url('/ideas') }}">Ideas</a></li>
             <li class="breadcrumb-item active">Comments</li>
             <li class="breadcrumb-menu">
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                    <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Idea </a>
+                    <a class="btn btn-secondary" href="{{ url('/ideas/create') }}"><i class="icon-plus"></i> &nbsp;Create Idea </a>
                 </div>
             </li>
            
@@ -24,16 +24,16 @@
             <div class="card-header">
                 <h3>
                     <i class="icon-bubbles"></i> 
-                    {{$post->title}}
+                    {{$idea->title}}
                 </h3>
                 <div class="col-md-2">
                     <i class="icon-user"></i>&nbsp;&nbsp;
-                    <small class="text-info">{{App\Post::userName($post->user_id)}}</small>
+                    <small class="text-info">{{App\Idea::userName($idea->user_id)}}</small>
                 </div>
                 <div class="col-md-3">
                         @php
                             $user_name = array();
-                            $users=App\Post::getTaggedUsers($post);
+                            $users=App\Idea::getTaggedUsers($idea);
                             foreach($users as $user)
                             {
                                 $user_name[] = $user->name;
@@ -45,8 +45,8 @@
             </div>
             <div class="card-block" id="comment-list">
                 <div class="form-group">
-                    <p>{{$post->description}}</p>
-                    @foreach($post->comments as $comment)
+                    <p>{{$idea->details}}</p>
+                    @foreach($idea->comments as $comment)
                         @if($comment->user_id == $user_id)
                             <div class="alert alert-info" role="alert">
                                 <div class="text-xs-left">
@@ -82,8 +82,8 @@
                         @endif
                     @endforeach
                     <div class="float-xs-right">
-                        <button type="button" value="{{$post->id}}" class="btn btn-block btn-outline-info open-commentbox">Add Comment</button>
-                        <input type="hidden" value="{{$post->id}}" id="post_id"/>
+                        <button type="button" value="{{$idea->id}}" class="btn btn-block btn-outline-info open-commentbox">Add Comment</button>
+                        <input type="hidden" value="{{$idea->id}}" id="idea_id"/>
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@ $(document).ready(function()
 $('#btn-save').on('click',function(e){ 
 
         var comment=$("#comment").val();
-        var post_id=$("#post_id").val();
+        var idea_id=$("#idea_id").val();
 
         var comment_id=$('#comment_id').val();
         
@@ -186,7 +186,7 @@ $('#btn-save').on('click',function(e){
 
         $.ajax({
             type: type,
-            url: url + '/ajax/comment/'+post_id,
+            url: url + '/ajax/comment/'+idea_id,
             data: formData,
             dataType: 'json',
             success: function (data) {

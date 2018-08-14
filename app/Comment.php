@@ -13,9 +13,9 @@ class Comment extends Model
     	return $this->belongsTo(User::class);
     }
 
-    public function posts()
+    public function ideas()
     {
-    	return $this->belongsTo(Post::class);
+    	return $this->belongsTo(Idea::class);
     }
 
     public static function userName($user_id)

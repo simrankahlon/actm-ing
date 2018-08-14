@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Comment;
-use App\Post;
+use App\Idea;
 use Auth;
 
 class CommentController extends Controller
@@ -17,14 +17,14 @@ class CommentController extends Controller
     	return \Response::json($comment);
     }
 
-    public function addComment(Post $post,Request $request)
+    public function addComment(Idea $idea,Request $request)
     {
     	$user=Auth::user();
 
     	if($request->comment_id == "")
     	{
     		$comment = new Comment;
-    		$comment->post_id=$post->id;
+    		$comment->idea_id=$idea->id;
     		$comment->comment=$request->comment;
     		$comment->user_id=$user->id;
     		$comment->save();

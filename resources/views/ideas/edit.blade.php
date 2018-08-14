@@ -3,14 +3,14 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
    <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-   <li class="breadcrumb-item"><a href="{{ url('/posts') }}">Ideas</a></li>
+   <li class="breadcrumb-item"><a href="{{ url('/ideas') }}">Ideas</a></li>
    <li class="breadcrumb-item active">Edit Idea</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="card">
-    <form action="{{ url('/posts/'.$post->id.'/edit') }}" method="post">
+    <form action="{{ url('/ideas/'.$idea->id.'/edit') }}" method="post">
         {{ csrf_field() }}
         <div class="card-header">
             <strong>Edit Idea</strong>
@@ -18,13 +18,13 @@
         <div class="card-block">
             <div class="form-group">
                 <label for="title">Title</label> <span style="color:red">*</span>
-                <input name ="title" type="text" class="form-control" id="name" placeholder="Title" value="{{ $post->title }}">
+                <input name ="title" type="text" class="form-control" id="name" placeholder="Title" value="{{ $idea->title }}">
                 <span style="color:red">{{ $errors->first('title') }}</span>
             </div>
                             
             <div class="form-group">
                 <label for="details">Details</label> <span style="color:red">*</span>
-                <textarea name ="details" class="form-control" id="details" placeholder="Details">{{$post->description}}</textarea>
+                <textarea name ="details" class="form-control" id="details" placeholder="Details">{{$idea->details}}</textarea>
                 <span style="color:red">{{ $errors->first('details') }}</span>
             </div>
 
@@ -36,7 +36,7 @@
                     @endphp
                         
                     @foreach($users as $user)
-                        @foreach($post->users as $selecteduser)
+                        @foreach($idea->users as $selecteduser)
                             @if($user->id == $selecteduser->id)
                                 @php
                                     $found = 1;
@@ -60,7 +60,7 @@
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ url('posts') }}" class="btn btn-default">Cancel</a>
+            <a href="{{ url('ideas') }}" class="btn btn-default">Cancel</a>
         </div>                      
     </form>
 </div>

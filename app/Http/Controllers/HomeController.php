@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Post;
+use App\Idea;
 use App\Comment;
 use Auth;
 
@@ -29,20 +29,20 @@ class HomeController extends Controller
     {
         $user=Auth::user();
         $user_count=User::count();
-        $post_count=Post::count();
+        $idea_count=Idea::count();
         $comment_count=Comment::count();
-        $mypost_count=Post::where('user_id',$user->id)->count();
+        $myidea_count=Idea::where('user_id',$user->id)->count();
 
-        $tag_posts=Post::join('post_user','posts.id','=','post_user.post_id')
-                         ->select('posts.*')
-                         ->where('post_user.user_id',$user->id)
+        $tag_ideas=Idea::join('idea_user','ideas.id','=','idea_user.idea_id')
+                         ->select('ideas.*')
+                         ->where('idea_user.user_id',$user->id)
                          ->limit(5)
                          ->get();
 
         
-        //Top % Posts
-        $posts=Post::orderBy('updated_at','desc')->limit(5)->get();
+        //Top % Ideas
+        $ideas=Idea::orderBy('updated_at','desc')->limit(5)->get();
 
-        return view('home',compact('user_count','post_count','comment_count','mypost_count','posts','tag_posts'));
+        return view('home',compact('user_count','idea_count','comment_count','myidea_count','ideas','tag_ideas'));
     }
 }

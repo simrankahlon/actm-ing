@@ -6,7 +6,7 @@
     </li>
     <li class="breadcrumb-menu">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-secondary" href="{{ url('/posts/create') }}"><i class="icon-plus"></i> &nbsp;Create Ideas </a>
+            <a class="btn btn-secondary" href="{{ url('/ideas/create') }}"><i class="icon-plus"></i> &nbsp;Create Ideas </a>
         </div>
     </li>
 </ol>
@@ -31,7 +31,7 @@
             <div class="h1 text-muted text-xs-right mb-2">
                 <i class="icon-bubbles"></i>
             </div>
-            <div class="h4 mb-0">{{$post_count}}</div>
+            <div class="h4 mb-0">{{$idea_count}}</div>
             <small class="text-muted text-uppercase font-weight-bold">Ideas</small>
             <progress class="progress progress-xs progress-primary mt-1 mb-0" value="25" max="100">25%</progress>
         </div>
@@ -51,7 +51,7 @@
             <div class="h1 text-muted text-xs-right mb-2">
                 <i class="icon-bubble"></i>
             </div>
-            <div class="h4 mb-0">{{$mypost_count}}</div>
+            <div class="h4 mb-0">{{$myidea_count}}</div>
             <small class="text-muted text-uppercase font-weight-bold">My Ideas</small>
             <progress class="progress progress-xs progress-danger mt-1 mb-0" value="25" max="100">25%</progress>
         </div>
@@ -72,7 +72,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($tag_posts as $post)
+            @foreach ($tag_ideas as $idea)
             	<tr>
                 	<td class="text-xs-center">
                     	<div class="avatar">
@@ -81,18 +81,18 @@
                 	</td>
                 	<td>
                     	<div>
-                        	<strong><a href="#">{{App\Post::userName($post->user_id)}}</a></strong>
+                        	<strong><a href="#">{{App\Idea::userName($idea->user_id)}}</a></strong>
                     	</div>
                 	</td>
                 	<td>
                 		<div class="float-xs-left">
-                        	<a href="#">{{$post->title}}</a>
+                        	<a href="#">{{$idea->title}}</a>
                 		</div>
                  	</td>
                  	<td>
                  		<div class="float-xs-left">
                     		<strong>
-                        		{{ $post->updated_at->diffForHumans()}}
+                        		{{ $idea->updated_at->diffForHumans()}}
                     		</strong>                                               
                  		</div>
                  	</td>
@@ -101,11 +101,11 @@
                         	@php
                             	$user_id=Auth::user()->id;
                         	@endphp
-                        	@if($post->user_id == $user_id)
-                            	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
-                            	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
+                        	@if($idea->user_id == $user_id)
+                            	<button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
+                            	<button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
                         	@endif
-                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">View</button>
+                        	<button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
                     	</div>
                 	</td>
             	</tr>
@@ -128,10 +128,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($posts as $post)
+            @foreach ($ideas as $idea)
             	<tr>
                 	<td class="text-xs-center">
-                        @if(App\Post::checkIfTagged($post))
+                        @if(App\Idea::checkIfTagged($idea))
                             <strong><i class="icon-tag"></i></strong>
                         @endif
                     	<div class="avatar">
@@ -140,18 +140,18 @@
                 	</td>
                 	<td>
                     	<div>
-                        	<strong><a href="#">{{App\Post::userName($post->user_id)}}</a></strong>
+                        	<strong><a href="#">{{App\Idea::userName($idea->user_id)}}</a></strong>
                     	</div>
                 	</td>
                 	<td>
                 		<div class="float-xs-left">
-                        	<a href="#">{{$post->title}}</a>
+                        	<a href="#">{{$idea->title}}</a>
                 		</div>
                  	</td>
                  	<td>
                  		<div class="float-xs-left">
                     		<strong>
-                        		{{ $post->updated_at->diffForHumans()}}
+                        		{{ $idea->updated_at->diffForHumans()}}
                     		</strong>                                               
                  		</div>
                  	</td>
@@ -159,7 +159,7 @@
                         <div class="float-xs-left">
                             @php
                                 $user_name = array();
-                                $users=App\Post::getTaggedUsers($post);
+                                $users=App\Idea::getTaggedUsers($idea);
                                 foreach($users as $user)
                                 {
                                     $user_name[] = $user->name;
@@ -175,11 +175,11 @@
                     </td>
                 	<td>
                     	<div class="float-xs-right">
-                        	@if($post->user_id == $user_id)
-                            	<button type="button" id="postEdit-{{$post->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/edit') }}'">Edit</button>
-                            	<button type="button" id="postDelete-{{$post->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/posts/'.$post->id.'/delete') }}')">Delete</button>
+                        	@if($idea->user_id == $user_id)
+                            	<button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
+                            	<button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
                         	@endif
-                        	<button type="button" id="postComment-{{$post->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/posts/'.$post->id.'/comments') }}'">View</button>
+                        	<button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
                     	</div>
                 	</td>
             	</tr>
