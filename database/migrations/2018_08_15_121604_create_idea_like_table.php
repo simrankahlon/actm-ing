@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIdeaUserTable extends Migration
+class CreateIdeaLikeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateIdeaUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('idea_user', function (Blueprint $table) {
+        Schema::create('idea_like', function (Blueprint $table) {
             $table->primary(['idea_id','user_id']);
             $table->integer('idea_id')->unsigned()->index();
             $table->foreign('idea_id')->references('id')->on('ideas')->onDelete('cascade');
@@ -30,6 +30,6 @@ class CreateIdeaUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('idea_users');
+        Schema::dropIfExists('idea_like');
     }
 }

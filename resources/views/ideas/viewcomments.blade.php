@@ -27,10 +27,10 @@
                     {{$idea->title}}
                 </h3>
                 <div class="col-md-2">
-                    <i class="icon-user"></i>&nbsp;&nbsp;
-                    <small class="text-info">{{App\Idea::userName($idea->user_id)}}</small>
+                    <strong><i class="icon-user"></i>&nbsp;
+                    <small class="text-info">{{App\Idea::userName($idea->user_id)}}</small></strong>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-8">
                         @php
                             $user_name = array();
                             $users=App\Idea::getTaggedUsers($idea);
@@ -40,12 +40,30 @@
                             }
                             $user_array = implode(',', $user_name);
                         @endphp
-                        <i class="icon-tag"></i>&nbsp;&nbsp;<small class="text-info">{{$user_array}}</small>
+                        <strong>
+                            <i class="icon-tag"></i>&nbsp;<small class="text-info">{{$user_array}}</small>
+                        </strong>
+                </div>
+                <div class="col-md-2">
+                    <h6>
+                        <strong>
+                            <i class="icon-like"></i>&nbsp;
+                            <span class="text-info">{{App\Idea::getLikeCount($idea)}}</span>
+                            &nbsp;&nbsp;
+                            <i class="icon-user-following"></i>
+                            <span class="text-info">{{App\Idea::getViewCount($idea)}}</span>
+                        </strong>
+                    </h6>
                 </div>
             </div>
+
             <div class="card-block" id="comment-list">
                 <div class="form-group">
-                    <p>{{$idea->details}}</p>
+                    <p id="displayDetails">
+                        @php
+                            echo $idea->details;
+                        @endphp
+                    </p>
                     @foreach($idea->comments as $comment)
                         @if($comment->user_id == $user_id)
                             <div class="alert alert-info" role="alert">
@@ -148,9 +166,14 @@ $(document).ready(function()
             })
 
     });
+
+    
 });
 
-
+$(document).ready(function(){ 
+    
+    $("#displayDetails").html();
+});
 
 $('#btn-save').on('click',function(e){ 
 

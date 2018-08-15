@@ -22,6 +22,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
     <link href="{{ asset('css/chosen.min.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('css/editor.css') }}" type="text/css" rel="stylesheet">
 
     
     <!-- Scripts -->
@@ -130,6 +131,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
     <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/editor.js') }}"></script>
     
 
     @if($flash = session('message'))

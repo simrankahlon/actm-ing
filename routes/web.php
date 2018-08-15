@@ -38,6 +38,11 @@ Route::post('/ideas/{idea}/edit','IdeasController@update')->middleware('revalida
 //Delete Idea Functionality
 Route::get('/ideas/{idea}/delete','IdeasController@delete')->middleware('revalidate');
 
+//Like Ideas.
+Route::get('/ideas/{idea}/like','IdeasController@like')->middleware('revalidate');
+//Dislike Ideas.
+Route::get('/ideas/{idea}/dislike','IdeasController@dislike')->middleware('revalidate');
+
 //View individual comment of user ideas.
 Route::get('/ideas/{idea}/comments','IdeasController@viewComments')->middleware('revalidate');
 

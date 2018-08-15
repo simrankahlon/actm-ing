@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Idea;
 use Auth;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class IdeasController extends Controller
 {
@@ -78,7 +79,42 @@ class IdeasController extends Controller
 
     public function viewComments(Idea $idea)
     {
+        $user=Auth::user();
+
+        if($idea->user_id!=$user->id)
+        {
+            $user_id=DB::table('idea_like')
+                        ->where('idea_like.idea_id',$idea->id)
+                        ->where('idea_like.user_id',$user->id)
+                        ->value('idea_like.user_id');
+
+            if(empty($user_id))
+            {
+                $idea->views()->sync($user->id);    
+            }
+        }
+        
         return view('ideas.viewcomments',compact('idea'));
+    }
+
+    public function like(Idea $idea)
+    {
+        $user=Auth::user();
+        $idea->likes()->sync($user->id);
+        session()->flash('message','You liked the Idea');
+        return back();
+    }
+
+    public function dislike(Idea $idea)
+    {
+        $user=Auth::user();
+        DB::table('idea_like')
+            ->where('idea_like.idea_id',$idea->id)
+            ->where('idea_like.user_id',$user->id)
+            ->delete();
+
+        session()->flash('message','You dislike the Idea');
+        return back();
     }
 
 

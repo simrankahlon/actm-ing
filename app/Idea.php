@@ -19,6 +19,16 @@ class Idea extends Model
 		return $this->belongsToMany(User::class, 'idea_user')->withTimestamps();
 	}
 
+	public function likes()
+	{
+		return $this->belongsToMany(User::class,'idea_like')->withTimestamps();
+	}
+
+	public function views()
+	{
+		return $this->belongsToMany(User::class,'idea_view')->withTimestamps();
+	}
+
 	public function comments()
 	{
 	    return $this->hasMany(Comment::class);
@@ -35,7 +45,7 @@ class Idea extends Model
 		$user=Auth::user();
 
 		$user_id=DB::table('idea_user')
-					->where('idea_user.post_id',$post->id)
+					->where('idea_user.idea_id',$idea->id)
 					->where('idea_user.user_id',$user->id)
 					->value('idea_user.user_id');
 
@@ -59,5 +69,42 @@ class Idea extends Model
 					->get();
 
 		return $user;
+	}
+
+	public static function checkifLiked($idea)
+	{
+		$user=Auth::user();
+
+		$user_id=DB::table('idea_like')
+					->where('idea_like.idea_id',$idea->id)
+					->where('idea_like.user_id',$user->id)
+					->value('idea_like.user_id');
+
+		if(empty($user_id))
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+
+	public static function getLikeCount($idea)
+	{
+		$idea_count = DB::table('idea_like')
+						  ->where('idea_like.idea_id',$idea->id)
+						  ->count();
+
+		return $idea_count;
+	}
+
+	public static function getViewCount($idea)
+	{
+		$idea_count = DB::table('idea_view')
+						  ->where('idea_view.idea_id',$idea->id)
+						  ->count();
+
+		return $idea_count;
 	}
 }

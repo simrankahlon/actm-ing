@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="card">
-    <form action="{{ url('/ideas/create') }}" method="post">
+    <form action="{{ url('/ideas/create') }}" method="post" id="addForm">
         {{ csrf_field() }}
         <div class="card-header">
             <strong>New Idea</strong>
@@ -24,7 +24,7 @@
                             
             <div class="form-group">
                 <label for="details">Details</label> <span style="color:red">*</span>
-                <textarea name ="details" class="form-control" id="details" placeholder="Details">{{old('details')}}</textarea>
+                <textarea name ="details1" class="form-control" id="details1" placeholder="Details">{{old('details')}}</textarea>
                 <span style="color:red">{{ $errors->first('details') }}</span>
             </div>
             
@@ -36,6 +36,8 @@
                     @endforeach
                 </select>
             </div>
+
+            <textarea name ="details" class="form-control" id="details" style="display:none;" placeholder="Details">{{old('details')}}</textarea>
 
         </div>
                             
@@ -50,7 +52,13 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
-  
+  $("#details1").Editor();
+
+});
+
+$( "#addForm" ).submit(function( event ) {
+    var text = $("#details1").Editor("getText");
+    $("#details").val(text);
 });
 </script>
 @endsection

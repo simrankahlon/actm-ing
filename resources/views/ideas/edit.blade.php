@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="card">
-    <form action="{{ url('/ideas/'.$idea->id.'/edit') }}" method="post">
+    <form action="{{ url('/ideas/'.$idea->id.'/edit') }}" method="post" id="editForm">
         {{ csrf_field() }}
         <div class="card-header">
             <strong>Edit Idea</strong>
@@ -69,7 +69,13 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
+  $("#details").Editor();
   
+});
+
+$( "#editForm" ).submit(function( event ) {
+    var str = $( '#details' ).text();
+      $('#details').val(str);
 });
 </script>
 @endsection
