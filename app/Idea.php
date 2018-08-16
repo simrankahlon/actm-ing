@@ -107,4 +107,26 @@ class Idea extends Model
 
 		return $idea_count;
 	}
+
+	public static function getLikeList($idea)
+	{
+		$users = DB::table('idea_like')
+					->join('users','users.id','=','idea_like.user_id')
+					->where('idea_like.idea_id',$idea->id)
+					->select('users.name')
+					->get();
+
+		return $users;
+	}
+
+	public static function getViewList($idea)
+	{
+		$users = DB::table('idea_view')
+					->join('users','users.id','=','idea_view.user_id')
+					->where('idea_view.idea_id',$idea->id)
+					->select('users.name')
+					->get();
+
+		return $users;
+	}
 }

@@ -2,8 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-   <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-   <li class="breadcrumb-item"><a href="{{ url('/ideas') }}">Ideas</a></li>
+   <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
    <li class="breadcrumb-item active">Add Idea</li>
 </ol>
 @endsection
@@ -43,7 +42,7 @@
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ url('ideas') }}" class="btn btn-default">Cancel</a> 
+            <a href="{{ url('/home') }}" class="btn btn-default">Cancel</a> 
         </div>                      
     </form>
 </div>

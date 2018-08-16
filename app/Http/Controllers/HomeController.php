@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         
         //Top % Ideas
-        $ideas=Idea::orderBy('updated_at','desc')->limit(5)->get();
+        $ideas=Idea::orderBy('updated_at','desc')->get();
 
         return view('home',compact('user_count','idea_count','comment_count','myidea_count','ideas','tag_ideas'));
     }

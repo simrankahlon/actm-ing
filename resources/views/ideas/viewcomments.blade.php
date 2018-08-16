@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('breadcrumb')
 <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-           
-            <li class="breadcrumb-item"><a href="{{ url('/ideas') }}">Ideas</a></li>
+            <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
             <li class="breadcrumb-item active">Comments</li>
             <li class="breadcrumb-menu">
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -47,10 +45,26 @@
                 <div class="col-md-2">
                     <h6>
                         <strong>
-                            <i class="icon-like"></i>&nbsp;
+                            <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getLikeList($idea);
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp" style="font-size:115%;">
+                            </i>
                             <span class="text-info">{{App\Idea::getLikeCount($idea)}}</span>
                             &nbsp;&nbsp;
-                            <i class="icon-user-following"></i>
+                            <i class="icon-user-following" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getViewList($idea);
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp" style="font-size:115%;">
+                            </i>
                             <span class="text-info">{{App\Idea::getViewCount($idea)}}</span>
                         </strong>
                     </h6>
@@ -136,6 +150,10 @@
 
 @section('javascriptfunctions')
 <script>
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 function confirmDelete(delUrl) 
 {

@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('breadcrumb')
 <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-           
-            <li class="breadcrumb-item active">Ideas</li>
+            <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
             <li class="breadcrumb-menu">
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                     

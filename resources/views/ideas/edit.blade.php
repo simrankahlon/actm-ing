@@ -2,8 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-   <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-   <li class="breadcrumb-item"><a href="{{ url('/ideas') }}">Ideas</a></li>
+   <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
    <li class="breadcrumb-item active">Edit Idea</li>
 </ol>
 @endsection
@@ -24,9 +23,11 @@
                             
             <div class="form-group">
                 <label for="details">Details</label> <span style="color:red">*</span>
-                <textarea name ="details" class="form-control" id="details" placeholder="Details">{{$idea->details}}</textarea>
+                <textarea name ="details1" class="form-control" id="details1" placeholder="Details">{{$idea->details}}</textarea>
                 <span style="color:red">{{ $errors->first('details') }}</span>
             </div>
+
+            <textarea name ="details" class="form-control" id="details" style="display:none;" placeholder="Details">{{$idea->details}}</textarea>
 
             <div class="form-group">
                 <label for="tag_users">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
@@ -60,7 +61,7 @@
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ url('ideas') }}" class="btn btn-default">Cancel</a>
+            <a href="{{ url('/home') }}" class="btn btn-default">Cancel</a>
         </div>                      
     </form>
 </div>
@@ -69,13 +70,15 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
-  $("#details").Editor();
+  $("#details1").Editor();
+  var text = $("#details").val();
+    $("#details1").Editor("setText",text);
   
 });
 
 $( "#editForm" ).submit(function( event ) {
-    var str = $( '#details' ).text();
-      $('#details').val(str);
+    var text = $("#details1").Editor("getText");
+    $("#details").val(text);
 });
 </script>
 @endsection

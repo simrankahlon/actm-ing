@@ -83,14 +83,15 @@ class IdeasController extends Controller
 
         if($idea->user_id!=$user->id)
         {
-            $user_id=DB::table('idea_like')
-                        ->where('idea_like.idea_id',$idea->id)
-                        ->where('idea_like.user_id',$user->id)
-                        ->value('idea_like.user_id');
+            $user_id=DB::table('idea_view')
+                        ->where('idea_view.idea_id',$idea->id)
+                        ->where('idea_view.user_id',$user->id)
+                        ->value('idea_view.user_id');
 
+            
             if(empty($user_id))
             {
-                $idea->views()->sync($user->id);    
+                $idea->views()->attach($user->id);    
             }
         }
         
@@ -100,7 +101,7 @@ class IdeasController extends Controller
     public function like(Idea $idea)
     {
         $user=Auth::user();
-        $idea->likes()->sync($user->id);
+        $idea->likes()->attach($user->id);
         session()->flash('message','You liked the Idea');
         return back();
     }
