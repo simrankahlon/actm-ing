@@ -96,3 +96,14 @@
      </table>
 </div>
 @endsection
+@section('javascriptfunctions')
+<script>
+function confirmDelete(delUrl) 
+{
+  if (confirm("Are you sure you want to Delete?")) 
+  {
+    document.location = delUrl;
+  }
+}
+</script>
+@endsection
