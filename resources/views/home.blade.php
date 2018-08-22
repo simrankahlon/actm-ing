@@ -82,7 +82,7 @@
                                 <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
                             @else
                                 @if(App\Idea::checkIfLiked($idea))
-                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i> Dislike</button>
+                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i> Unlike</button>
                                 @else
                                     <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/like') }}'"><i class="icon-like"></i> Like</button>
                                 @endif
