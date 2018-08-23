@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -50,5 +51,27 @@ class User extends Authenticatable
 
         return !! $role->intersect($this->roles)->count();
 
+    }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_user')->withTimestamps();
+    }
+
+    public static function checkifRoleAttached($user,$role)
+    {
+        $role_id=DB::table('role_user')
+                    ->where('role_id',$role->id)
+                    ->where('user_id',$user->id)
+                    ->value('role_id');
+
+        if(empty($role_id))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

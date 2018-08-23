@@ -55,5 +55,21 @@ Route::post('/ajax/comment/{idea}','CommentController@addComment')->middleware('
 Route::get('comments/{comment}/delete','CommentController@deleteComment')->middleware('revalidate','gateauth');
 
 
+//Project Add.
+Route::get('/projects/create','ProjectsController@create')->middleware('revalidate','gateauth');
+Route::post('/projects/create','ProjectsController@store')->middleware('revalidate','gateauth');
+
+//List Individual Ideas Route
+Route::get('/projects','ProjectsController@list')->middleware('revalidate','gateauth');
+
+//Edit Project Route
+Route::get('/projects/{project}/edit','ProjectsController@edit')->middleware('revalidate','gateauth');
+Route::post('/projects/{project}/edit','ProjectsController@update')->middleware('revalidate','gateauth');
+
+//Delete Idea Functionality
+Route::get('/projects/{project}/delete','ProjectsController@delete')->middleware('revalidate','gateauth');
+
+//Users List
+Route::get('/users','UserController@list')->middleware('revalidate','gateauth');
 
 
