@@ -8,7 +8,9 @@
 @section('content')
 @php
     $user_id=Auth::user()->id;
+    $url= url("/");
 @endphp
+<input type="hidden"  value="{{$url}}" id="url" class="url"/>
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -17,80 +19,69 @@
                     <tr>
                         <th class="text-xs-center"><i class="icon-people"></i>
                         <th>User</th>
-                        <th>Title</th>
+                        <th>Project Admin</th>
                         <th>Activity</th>
-                        <th>Tagged</th>
-                        <th><div class="float-xs-right">Action</div></th>
+                        <th><div class="float-xs-right">Admin</div></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
                             <td class="text-xs-center">
-                            @if(App\Idea::checkIfTagged($idea))
-                                <strong><i class="icon-tag"></i></strong>
-                            @endif
-                                
                                 <div class="avatar">
                                     <img src="{{ asset('img/user-icon.png') }}" class="img-avatar" alt="Client Logo">
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    <strong><a href="#">{{App\Idea::userName($idea->user_id)}}</a></strong>
+                                    <strong><a href="#">{{$user->name}}</a></strong>
                                 </div>
                             </td>
                             <td>
                                 <div class="float-xs-left">
-                                    <a href="#">{{$idea->title}}</a>
+                                    @php
+                                        $user_projects = array();
+                                        foreach($user->projects as $project)
+                                        {
+                                            $user_projects[] = $project->name;
+                                        }
+                                        $project_array = implode(',', $user_projects);
+                                    @endphp
+                                    @if(empty($project_array))
+                                        <div class="float-xs-left text-muted"><strong>-</strong></div>
+                                    @else
+                                        <div class="float-xs-left text-muted"><strong>{{$project_array}}</strong></div>
+                                    @endif
                                 </div>
                             </td>
                             <td>
                                 <div class="float-xs-left">
                                     <strong>
-                                        {{ $idea->updated_at->diffForHumans()}}
+                                        {{ $user->updated_at->diffForHumans()}}
                                     </strong>                                               
                                 </div>
                             </td>
                             <td>
-                                <div class="float-xs-left">
-                                        @php
-                                            $user_name = array();
-                                            $users=App\Idea::getTaggedUsers($idea);
-                                            foreach($users as $user)
-                                            {
-                                                $user_name[] = $user->name;
-                                            }
-                                            $user_array = implode(',', $user_name);
-                                        @endphp
-                                        @if(empty($user_array))
-                                            <div class="float-xs-left text-muted"><strong>-</strong></div>
-                                        @else
-                                            <div class="float-xs-left text-muted"><strong>{{$user_array}}</strong></div>
-                                        @endif
-                                </div>
-                            </td>
-                            <td>
                                 <div class="float-xs-right">
-                                    @if($idea->user_id == $user_id)
-                                        <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
-                                        <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
-                                    @else
-                                        @if(App\Idea::checkIfLiked($idea))
-                                            <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i>Unlike</button>
+                                    <strong>
+                                        @if(App\User::checkifAdmin($user))
+                                            @if($user_id==$user->id)
+                                                <input class="form-check-input admin" type="checkbox" id="{{$user->id}}" value="{{$user->id}}" checked disabled>
+                                            @else
+                                                <input class="form-check-input admin" type="checkbox" id="{{$user->id}}" value="{{$user->id}}" checked>
+                                            @endif
                                         @else
-                                            <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/like') }}'"><i class="icon-like"></i> Like</button>
+                                            <input class="form-check-input admin" type="checkbox" id="{{$user->id}}" value="{{$user->id}}">
                                         @endif
-                                    @endif
-                                    <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
+                                    </strong>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="6" align="right">
+                        <td colspan="5" align="right">
                             <nav>
-                                {{$ideas->links()}}
+                                {{$users->links()}}
                             </nav>
                         </td>
                     </tr>
@@ -102,12 +93,36 @@
 @endsection
 @section('javascriptfunctions')
 <script>
-function confirmDelete(delUrl) 
-{
-  if (confirm("Are you sure you want to Delete?")) 
-  {
-    document.location = delUrl;
-  }
-}
+$('.admin').click(function() {
+    var checked = 0;
+    var user_id=$(this).val();
+    var url= $('#url').val();
+    if($(this).is(':checked'))
+    {
+        checked=1;
+    }
+
+    $.ajax
+    ({
+        type: "GET",
+        url: url + '/ajax/admin/' + user_id + '/' +checked,
+        success: function (data) {
+
+        },
+        statusCode: 
+        {
+            401: function()
+            { 
+                window.location.href =url+'/login';
+            }
+        },
+        error: function (data) 
+        {
+            console.log('Error:', data);
+        }
+    })
+
+});
+
 </script>
 @endsection

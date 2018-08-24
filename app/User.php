@@ -74,4 +74,21 @@ class User extends Authenticatable
             return 0;
         }
     }
+
+    public static function checkifAdmin(User $user)
+    {
+        $role_id=Role::join('role_user','role_user.role_id','=','roles.id')
+                       ->where('roles.name','administrator')
+                       ->where('role_user.user_id',$user->id)
+                       ->first();
+        
+        if(empty($role_id))
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+    }
 }

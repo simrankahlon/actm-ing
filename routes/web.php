@@ -73,3 +73,7 @@ Route::get('/projects/{project}/delete','ProjectsController@delete')->middleware
 Route::get('/users','UserController@list')->middleware('revalidate','gateauth');
 
 
+//Make Admim Ajax.
+Route::get('/ajax/admin/{user}/{checked}','UserController@makeAdmin')->middleware('revalidate','gateauth');
+
+

@@ -13,4 +13,9 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'project_user')->withTimestamps();
     }
+
+    public function ideas()
+    {
+        return $this->hasMany(Idea::class);
+    }
 }

@@ -17,8 +17,12 @@ class CreateIdeasTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('title');
-            $table->longText('details');
+            $table->string('problem_statement');
+            $table->longText('opportunity');
+            $table->integer('project_id')->unsigned()->index();
+            $table->longText('implementation')->nullable();
+            $table->longText('benefits')->nullable();
+            $table->string('current_status')->nullable();
             $table->timestamps();
         });
     }

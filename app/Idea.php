@@ -33,6 +33,11 @@ class Idea extends Model
 	{
 	    return $this->hasMany(Comment::class);
 	}
+	
+	public function projects()
+	{
+	    return $this->belongsTo(Project::class);
+	}
 
 	public static function userName($user_id)
 	{

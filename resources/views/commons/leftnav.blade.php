@@ -10,7 +10,7 @@
                 Admin
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-people"></i>Projects</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-layers"></i>Projects</a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/projects/create') }}" target="_top"><i class="icon-arrow-right"></i>Create</a>
