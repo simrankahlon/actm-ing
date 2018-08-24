@@ -16,13 +16,13 @@
         </div>
         <div class="card-block">
             <div class="form-group">
-                <label for="title">Title</label> <span style="color:red">*</span>
-                <input name ="title" type="text" class="form-control" id="name" placeholder="Title" value="{{ old('title') }}">
-                <span style="color:red">{{ $errors->first('title') }}</span>
+                <label for="problem_statement">Problem Statement</label> <span style="color:red">*</span>
+                <input name ="problem_statement" type="text" class="form-control" id="name" placeholder="Problem Statement" value="{{ old('problem_statement') }}">
+                <span style="color:red">{{ $errors->first('problem_statement') }}</span>
             </div>
                             
             <div class="form-group">
-                <label for="details">Details</label> <span style="color:red">*</span>
+                <label for="details">Opportunity</label> <span style="color:red">*</span>
                 <textarea name ="details1" class="form-control" id="details1" placeholder="Details">{{old('details')}}</textarea>
                 <span style="color:red">{{ $errors->first('details') }}</span>
             </div>
