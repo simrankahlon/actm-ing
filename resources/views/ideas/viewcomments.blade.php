@@ -22,11 +22,15 @@
             <div class="card-header">
                 <h3>
                     <i class="icon-bubbles"></i> 
-                    {{$idea->title}}
+                    {{$idea->problem_statement}}
                 </h3>
                 <div class="col-md-2">
                     <strong><i class="icon-user"></i>&nbsp;
                     <small class="text-info">{{App\Idea::userName($idea->user_id)}}</small></strong>
+                    <div>
+                        <strong><i class="icon-layers"></i>&nbsp;
+                        <small class="text-info">{{App\Idea::getProjectName($idea->project_id)}}</small></strong>       
+                    </div>
                 </div>
                 <div class="col-md-8">
                         @php
@@ -75,9 +79,11 @@
                 <div class="form-group">
                     <p id="displayDetails">
                         @php
-                            echo $idea->details;
+                            echo $idea->opportunity;
                         @endphp
                     </p>
+                    <p> <strong class="text-info">Implementation : </strong><span class="text-muted">{{$idea->implementation}}</span></p>
+                    <p> <strong class="text-info">Added Benefits : </strong><span class="text-muted">{{$idea->benefits}}</span></p>
                     @foreach($idea->comments as $comment)
                         @if($comment->user_id == $user_id)
                             <div class="alert alert-info" role="alert">

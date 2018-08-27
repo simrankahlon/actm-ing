@@ -91,4 +91,9 @@ class User extends Authenticatable
             return 1;
         }
     }
+
+    public function assignRole($role){
+        $role = Role::whereName($role)->firstOrFail();
+        return $this->roles()->attach([$role->id]);
+    }
 }

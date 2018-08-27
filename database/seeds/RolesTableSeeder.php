@@ -14,23 +14,23 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $role_admin = Role::create(['name' => 'administrator', 'label' => 'Administrator']);
-        $role_groupadmin = Role::create(['name' => 'projectadmin', 'label' => 'Project Admin']);
+        $role_contributer = Role::create(['name' => 'contributer','label' => 'Contributer']);
 
         $permission_ids = array();
 
         $role_admins = [
                        "add_admin",
-                       "add_projectadmin",
+                       "idea_contributer"
                       ];
         $permission_ids = Permission::ConvertNametoId($role_admins); 
         $role_admin->permissions()->attach($permission_ids);
 
 
-        $role_groupadmins = [
-                       "add_projectadmin",
+        $role_contributers = [
+                       "idea_contributer"
                       ];
-        $permission_ids = Permission::ConvertNametoId($role_groupadmins); 
-        $role_groupadmin->permissions()->attach($permission_ids);
+        $permission_ids = Permission::ConvertNametoId($role_contributers); 
+        $role_contributer->permissions()->attach($permission_ids);
 
     }
 }

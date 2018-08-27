@@ -49,7 +49,7 @@
                             </td>
                             <td>
                                 <div class="float-xs-left">
-                                    <a href="#">{{$idea->title}}</a>
+                                    <a href="#">{{$idea->problem_statement}}</a>
                                 </div>
                             </td>
                             <td>

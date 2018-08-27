@@ -7,6 +7,7 @@ use App\Idea;
 use Auth;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use App\Project;
 
 class IdeasController extends Controller
 {
@@ -15,21 +16,29 @@ class IdeasController extends Controller
     {
        $user=Auth::user();
        $users=User::where('id','<>',$user->id)->get();
-       return view('ideas.add',compact('users'));
+       $projects = Project::all();
+       return view('ideas.add',compact('users','projects'));
     }
 
     public function store(Request $request)
     {
     	$user=Auth::user();
     	$this->validate($request,[
-    	      'title' => 'required',
-    	      'details' =>'required',
+    	      'problem_statement' => 'required',
+              'project' => 'required',
+    	      'opportunity' =>'required',
+              'implementation' => 'required',
+              'added_benefits' => 'required',
     	      ]);
 
     	$idea = new Idea;
     	$idea->user_id=$user->id;
-    	$idea->title=request('title');
-    	$idea->details=request('details');
+    	$idea->problem_statement=request('problem_statement');
+    	$idea->project_id=request('project');
+        $idea->opportunity=request('opportunity');
+        $idea->implementation=request('implementation');
+        $idea->benefits=request('added_benefits');
+
         $idea->save();
         $idea->users()->sync($request->tag_users);
         
@@ -48,20 +57,27 @@ class IdeasController extends Controller
     {
     	$user=Auth::user();
         $users=User::where('id','<>',$user->id)->get();
-        return view('ideas.edit',compact('idea','users'));
+        $projects = Project::all();
+        return view('ideas.edit',compact('idea','users','projects'));
     }
 
     public function update(Idea $idea, Request $request)
     {
     	$user=Auth::user();
     	$this->validate($request,[
-    	      'title' => 'required',
-    	      'details' =>'required',
-    	      ]);
+              'problem_statement' => 'required',
+              'project' => 'required',
+              'opportunity' =>'required',
+              'implementation' => 'required',
+              'added_benefits' => 'required',
+              ]);
 
-    	$idea->user_id=$user->id;
-    	$idea->title=request('title');
-    	$idea->details=request('details');
+        $idea->user_id=$user->id;
+        $idea->problem_statement=request('problem_statement');
+        $idea->project_id=request('project');
+        $idea->opportunity=request('opportunity');
+        $idea->implementation=request('implementation');
+        $idea->benefits=request('added_benefits');
         $idea->update();
         $idea->users()->sync($request->tag_users);
     	session()->flash('message','Idea updated successfully!');

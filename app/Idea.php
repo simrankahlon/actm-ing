@@ -134,4 +134,10 @@ class Idea extends Model
 
 		return $users;
 	}
+
+	public static function getProjectName($project_id)
+	{
+		$project=Project::find($project_id);
+		return $project->name;
+	}
 }

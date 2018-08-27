@@ -13,6 +13,6 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         Permission::create(['name' => 'add_admin', 'label' => 'Add Admin']);
-        Permission::create(['name' => 'add_projectadmin', 'label' => 'Add Project Admin']);
+        Permission::create(['name' => 'idea_contributer', 'label' => 'Idea Contributer']);
     }
 }

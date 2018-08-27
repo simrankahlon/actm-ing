@@ -7,6 +7,8 @@ use App\User;
 use App\Idea;
 use App\Comment;
 use Auth;
+use Illuminate\Support\Facades\DB;
+use Session;
 
 class HomeController extends Controller
 {
@@ -27,7 +29,19 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
         $user=Auth::user();
+        
+        $project_id = DB::table('project_user')
+                          ->where('user_id',$user->id)
+                          ->limit(1)
+                          ->value('project_id');
+
+        if(!empty($project_id))
+        {
+            Session::put('is_projectadmin','Yes');
+        }
+
         $user_count=User::count();
         $idea_count=Idea::count();
         $comment_count=Comment::count();

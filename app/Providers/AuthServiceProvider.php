@@ -25,7 +25,21 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        if (\Schema::hasTable('permissions'))
+        {
+            foreach ($this->getPermissions() as $permission)
+            {
+                Gate::define($permission->name, function($user) use($permission) 
+                {
+                    return $user->hasRole($permission->roles);
+                });
+            }
+        }
     }
 
+    protected function getPermissions(){
+        return Permission::with('roles')->get();
+    }
     
 }

@@ -16,18 +16,45 @@
         </div>
         <div class="card-block">
             <div class="form-group">
-                <label for="title">Title</label> <span style="color:red">*</span>
-                <input name ="title" type="text" class="form-control" id="name" placeholder="Title" value="{{ $idea->title }}">
-                <span style="color:red">{{ $errors->first('title') }}</span>
+                <label for="problem_statement">Problem Statement</label> <span style="color:red">*</span>
+                <input name ="problem_statement" type="text" class="form-control" id="name" placeholder="Problem Statement" value="{{$idea->problem_statement}}">
+                <span style="color:red">{{ $errors->first('problem_statement') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="project">Project</label> <span style="color:red">*</span>
+                <select id="project" name="project" class="form-control" size="1">
+                    <option value="">Please select</option>
+                    @foreach($projects as $project)
+                        @if($project->id == $idea->project_id)
+                            <option value="{{$project->id}}" selected>{{$project->name}}</option>
+                        @else
+                            <option value="{{$project->id}}">{{$project->name}}</option>
+                        @endif
+                    @endforeach
+                </select>
+                <span style="color:red">{{ $errors->first('project') }}</span>
             </div>
                             
             <div class="form-group">
-                <label for="details">Details</label> <span style="color:red">*</span>
-                <textarea name ="details1" class="form-control" id="details1" placeholder="Details">{{$idea->details}}</textarea>
-                <span style="color:red">{{ $errors->first('details') }}</span>
+                <label for="opportunity1">Opportunity</label> <span style="color:red">*</span>
+                <textarea name ="opportunity1" class="form-control" id="opportunity1" placeholder="opportunity">{{old('opportunity1')}}</textarea>
+                <span style="color:red">{{ $errors->first('opportunity') }}</span>
             </div>
 
-            <textarea name ="details" class="form-control" id="details" style="display:none;" placeholder="Details">{{$idea->details}}</textarea>
+            <div class="form-group">
+                <label for="implementation">What goes into Implementing this ?</label> <span style="color:red">*</span>
+                <textarea name ="implementation" class="form-control" id="implementation" placeholder="What goes into Implementing this ?">{{ $idea->implementation}}</textarea>
+                <span style="color:red">{{ $errors->first('implementation') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="added_benefits">Added Benefits</label> <span style="color:red">*</span>
+                <textarea name ="added_benefits" class="form-control" id="added_benefits" placeholder="Added Benefits">{{$idea->benefits}}</textarea>
+                <span style="color:red">{{ $errors->first('added_benefits') }}</span>
+            </div>
+
+            <textarea name ="opportunity" class="form-control" id="opportunity" style="display:none;" placeholder="Opportunity">{{$idea->opportunity}}</textarea>
 
             <div class="form-group">
                 <label for="tag_users">Tag Users</label>&nbsp;<small>(Multi-Select)</small>
@@ -70,15 +97,15 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
-  $("#details1").Editor();
-  var text = $("#details").val();
-    $("#details1").Editor("setText",text);
+  $("#opportunity1").Editor();
+  var text = $("#opportunity").val();
+    $("#opportunity1").Editor("setText",text);
   
 });
 
 $( "#editForm" ).submit(function( event ) {
-    var text = $("#details1").Editor("getText");
-    $("#details").val(text);
+    var text = $("#opportunity1").Editor("getText");
+    $("#opportunity").val(text);
 });
 </script>
 @endsection

@@ -20,11 +20,34 @@
                 <input name ="problem_statement" type="text" class="form-control" id="name" placeholder="Problem Statement" value="{{ old('problem_statement') }}">
                 <span style="color:red">{{ $errors->first('problem_statement') }}</span>
             </div>
+
+            <div class="form-group">
+                <label for="project">Project</label> <span style="color:red">*</span>
+                <select id="project" name="project" class="form-control" size="1">
+                    <option value="">Please select</option>
+                    @foreach($projects as $project)
+                        <option value="{{$project->id}}" @if (old('project') == $project->id) selected="selected" @endif>{{$project->name}}</option>
+                    @endforeach
+                </select>
+                <span style="color:red">{{ $errors->first('project') }}</span>
+            </div>
                             
             <div class="form-group">
-                <label for="details">Opportunity</label> <span style="color:red">*</span>
-                <textarea name ="details1" class="form-control" id="details1" placeholder="Details">{{old('details')}}</textarea>
-                <span style="color:red">{{ $errors->first('details') }}</span>
+                <label for="opportunity1">Opportunity</label> <span style="color:red">*</span>
+                <textarea name ="opportunity1" class="form-control" id="opportunity1" placeholder="opportunity">{{old('opportunity1')}}</textarea>
+                <span style="color:red">{{ $errors->first('opportunity') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="implementation">What goes into Implementing this ?</label> <span style="color:red">*</span>
+                <textarea name ="implementation" class="form-control" id="implementation" placeholder="What goes into Implementing this ?">{{old('implementation')}}</textarea>
+                <span style="color:red">{{ $errors->first('implementation') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="added_benefits">Added Benefits</label> <span style="color:red">*</span>
+                <textarea name ="added_benefits" class="form-control" id="added_benefits" placeholder="Added Benefits">{{old('added_benefits')}}</textarea>
+                <span style="color:red">{{ $errors->first('added_benefits') }}</span>
             </div>
             
             <div class="form-group">
@@ -36,7 +59,7 @@
                 </select>
             </div>
 
-            <textarea name ="details" class="form-control" id="details" style="display:none;" placeholder="Details">{{old('details')}}</textarea>
+            <textarea name ="opportunity" class="form-control" id="opportunity" style="display:none;" placeholder="Details">{{old('opportunity')}}</textarea>
 
         </div>
                             
@@ -51,13 +74,13 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
-  $("#details1").Editor();
+  $("#opportunity1").Editor();
 
 });
 
 $( "#addForm" ).submit(function( event ) {
-    var text = $("#details1").Editor("getText");
-    $("#details").val(text);
+    var text = $("#opportunity1").Editor("getText");
+    $("#opportunity").val(text);
 });
 </script>
 @endsection

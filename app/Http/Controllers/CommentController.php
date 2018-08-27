@@ -11,7 +11,6 @@ use Auth;
 class CommentController extends Controller
 {
     //
-
     public function viewComment(Comment $comment)
     {
     	return \Response::json($comment);

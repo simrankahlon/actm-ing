@@ -15,6 +15,11 @@ class Role extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
+    public function givePermissionTo(Permission $permission){
+        //You can change the following line to Sync later on
+        return $this->permissions()->save($permission);
+    }
+
     public static function ConvertNametoId($roleNames)
     {
     	$roleids=[];

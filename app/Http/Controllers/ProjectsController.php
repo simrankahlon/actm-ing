@@ -8,13 +8,21 @@ use App\User;
 use App\Project;
 use App\Role;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 
 class ProjectsController extends Controller
 {
     public function create()
     {
-       if(auth()->user()->can('add_projectadmin'))
+       $project_id="";
+
+       if(Session::has('is_projectadmin'))
+       {
+            $project_id=Session::get('is_projectadmin');
+       }
+
+       if(auth()->user()->can('add_projectadmin_'.$project_id) or auth()->user()->can('add_admin'))
        {
        		$user=Auth::user();
        		$users=User::where('id','<>',$user->id)->get();
@@ -52,14 +60,19 @@ class ProjectsController extends Controller
             $project->users()->attach($ausers->id);// Attach all admin users to the project.
         }
 
-        $role_id=Role::where('name','projectadmin')->value('id');
+        //Create Project Specific Roles and Permissions
+        Project::create_admin_role_permission_for_project($project->id);
+        
+        /*$role_id=Role::where('name','projectadmin')->value('id');
 
         $role = Role::find($role_id);
 
         if(User::checkifRoleAttached($user,$role))
         {
             $user->roles()->attach($role_id);        
-        }
+        }*/
+
+        $role_id=Role::where('name','project_admin_'.$project->id)->value('id');
 
         if(!empty($request->project_admin))
         {
@@ -80,12 +93,22 @@ class ProjectsController extends Controller
 
     public function list()
     {
-    	if(auth()->user()->can('add_projectadmin'))
-    	{
+    	
+        $project_id="";
+
+        if(Session::has('is_projectadmin'))
+        {
+             $project_id=Session::get('is_projectadmin');
+        }
+
+        if(auth()->user()->can('add_projectadmin_'.$project_id) or auth()->user()->can('add_admin'))
+        {
     		$user=Auth::user();
+
             $projects=Project::join('project_user','projects.id','=','project_user.project_id')
                                ->where('project_user.user_id',$user->id)
                                ->paginate(50);
+                               
     		return view('projects.view',compact('projects'));
     	}
     	else

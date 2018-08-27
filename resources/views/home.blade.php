@@ -23,7 +23,7 @@
             <tr>
                 <th class="text-xs-center"><i class="icon-people"></i>
                 <th>User</th>
-                <th>Title</th>
+                <th>Problem Statement</th>
                 <th>Activity</th>
                 <th>Tagged</th>
                 <th><div class="float-xs-right">Action</div></th>
@@ -43,11 +43,12 @@
                 	<td>
                     	<div>
                         	<strong><a href="#">{{App\Idea::userName($idea->user_id)}}</a></strong>
+                            <div><small class="text-muted bold">{{ App\Idea::getProjectName($idea->project_id)}}</small></div>
                     	</div>
                 	</td>
                 	<td>
                 		<div class="float-xs-left">
-                        	<a href="#">{{$idea->title}}</a>
+                        	<a href="#">{{$idea->problem_statement}}</a>
                 		</div>
                  	</td>
                  	<td>
