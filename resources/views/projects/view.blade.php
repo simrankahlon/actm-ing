@@ -25,7 +25,7 @@
                         <th>Name</th>
                         <th>Admins</th>
                         <th>Activity</th>
-                        <th><div class="float-xs-right">Action</div></th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +64,7 @@
                                 <div class="float-xs-right">
                                     <button type="button" id="projectEdit-{{$project->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/projects/'.$project->id.'/edit') }}'">Edit</button>
                                     <button type="button" id="projectDelete-{{$project->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/projects/'.$project->id.'/delete') }}')">Delete</button>
+                                    <button type="button" id="projectIdeas-{{$project->id}}" class="btn btn-link btn-sm" onclick="window.location.href='{{ url('/projects/'.$project->id.'/ideas') }}'" style="color:green;">Ideas</button>
                                 </div>
                             </td>
                         </tr>

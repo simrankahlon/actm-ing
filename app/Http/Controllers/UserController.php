@@ -9,9 +9,14 @@ use App\Project;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function list()
     {
-    	if(auth()->user()->can('add_projectadmin'))
+    	if(auth()->user()->can('add_admin'))
        	{
        		$users=User::paginate(50);
        		return view('users.view',compact('users'));
@@ -33,7 +38,10 @@ class UserController extends Controller
             $user->roles()->attach($role_id);
             foreach($projects as $project)
             {
-              $user->projects()->attach($project->id);
+                if(User::checkifAlreadyAttached($user->id,$project->id))
+                {
+                    $user->projects()->attach($project->id);
+                }
             }
         }
         else if($checked == 0)
@@ -41,7 +49,10 @@ class UserController extends Controller
             $user->roles()->detach($role_id);
             foreach($projects as $project)
             {
-              $user->projects()->detach($project->id);
+                if(User::checkifAttachedToProjectRole($user->id,$project->id))
+                {
+                    $user->projects()->detach($project->id);    
+                }
             }
         }
 

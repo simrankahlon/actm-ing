@@ -12,6 +12,11 @@ use App\Project;
 class IdeasController extends Controller
 {
     
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function create()
     {
        $user=Auth::user();
@@ -27,8 +32,7 @@ class IdeasController extends Controller
     	      'problem_statement' => 'required',
               'project' => 'required',
     	      'opportunity' =>'required',
-              'implementation' => 'required',
-              'added_benefits' => 'required',
+              
     	      ]);
 
     	$idea = new Idea;
@@ -68,8 +72,6 @@ class IdeasController extends Controller
               'problem_statement' => 'required',
               'project' => 'required',
               'opportunity' =>'required',
-              'implementation' => 'required',
-              'added_benefits' => 'required',
               ]);
 
         $idea->user_id=$user->id;

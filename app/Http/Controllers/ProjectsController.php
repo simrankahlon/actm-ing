@@ -9,20 +9,27 @@ use App\Project;
 use App\Role;
 use Illuminate\Support\Facades\DB;
 use Session;
+use App\Permission;
+use App\Idea;
 
 
 class ProjectsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function create()
     {
        $project_id="";
 
-       if(Session::has('is_projectadmin'))
+       if(Session::has('project_id'))
        {
-            $project_id=Session::get('is_projectadmin');
+            $project_id=Session::get('project_id');
        }
 
-       if(auth()->user()->can('add_projectadmin_'.$project_id) or auth()->user()->can('add_admin'))
+       if(auth()->user()->can('admin_project_'.$project_id) or auth()->user()->can('add_admin'))
        {
        		$user=Auth::user();
        		$users=User::where('id','<>',$user->id)->get();
@@ -57,33 +64,29 @@ class ProjectsController extends Controller
         
         foreach($admin_users as $ausers)
         {
-            $project->users()->attach($ausers->id);// Attach all admin users to the project.
+            if(User::checkifAlreadyAttached($ausers->id,$project->id))
+            {
+                $project->users()->attach($ausers->id);// Attach all admin users to the project.
+            }
         }
 
         //Create Project Specific Roles and Permissions
         Project::create_admin_role_permission_for_project($project->id);
         
-        /*$role_id=Role::where('name','projectadmin')->value('id');
-
-        $role = Role::find($role_id);
-
-        if(User::checkifRoleAttached($user,$role))
-        {
-            $user->roles()->attach($role_id);        
-        }*/
-
         $role_id=Role::where('name','project_admin_'.$project->id)->value('id');
 
-        if(!empty($request->project_admin))
+        $role=Role::find($role_id);
+
+        $role->users()->sync($request->project_admin);
+
+        $role->users()->attach($user->id);
+
+        foreach($admin_users as $ausers)
         {
-            foreach($request->project_admin as $user_id)
+            if(User::checkifRoleAttached($ausers->id,$role_id))
             {
-                $user=User::find($user_id);
-                if(User::checkifRoleAttached($user,$role))
-                {
-                    $user->roles()->attach($role_id);        
-                }
-            } 
+                $role->users()->attach($ausers->id);  
+            }
         }
 
         session()->flash('message','Project added successfully!');
@@ -96,12 +99,12 @@ class ProjectsController extends Controller
     	
         $project_id="";
 
-        if(Session::has('is_projectadmin'))
+        if(Session::has('project_id'))
         {
-             $project_id=Session::get('is_projectadmin');
+             $project_id=Session::get('project_id');
         }
 
-        if(auth()->user()->can('add_projectadmin_'.$project_id) or auth()->user()->can('add_admin'))
+        if(auth()->user()->can('admin_project_'.$project_id) or auth()->user()->can('add_admin'))
         {
     		$user=Auth::user();
 
@@ -119,19 +122,19 @@ class ProjectsController extends Controller
 
     public function edit(Project $project)
     {
-       if(auth()->user()->can('add_projectadmin'))
-       {
-            $logged_user=Auth::user();
-            foreach($project->users as $user)
-            {
-                if($user->id==$logged_user->id)
-                {
-                    $users=User::where('id','<>',$logged_user->id)->get();
-                    return view('projects.edit',compact('project','users'));
-                }
-            }
+       $project_id="";
 
-            return view('errors.403');
+       $user=Auth::user();
+
+       if(Session::has('project_id'))
+       {
+            $project_id=Session::get('project_id');
+       }
+
+       if(auth()->user()->can('admin_project_'.$project_id) or auth()->user()->can('add_admin'))
+       {
+            $users=User::where('id','<>',$user->id)->get();
+            return view('projects.edit',compact('project','users'));
        }
        else
        {
@@ -147,6 +150,7 @@ class ProjectsController extends Controller
               ]);
         $project->name=$request->name;
         $project->update();
+
         $project->users()->sync($request->project_admin);
 
         //Attaching again , since we are using a sync process.
@@ -155,59 +159,34 @@ class ProjectsController extends Controller
         $admin_users = User::join('role_user','role_user.user_id','=','users.id')
                             ->join('roles','roles.id','=','role_user.role_id')
                             ->where('roles.name','administrator')
-                            ->where('user.id','<>',$user->id)
-                            ->select('users.id');
+                            ->where('users.id','<>',$user->id)
+                            ->select('users.id')
+                            ->get();
 
         foreach($admin_users as $ausers)
         {
-            $project->users()->attach($ausers->id);// Attach all admin users to the project.
+           if(User::checkifAlreadyAttached($ausers->id,$project->id))
+            {
+                $project->users()->attach($ausers->id);// Attach all admin users to the project.
+            }
         }
 
-        $role_id=Role::where('name','projectadmin')->value('id');
+        $role_id=Role::where('name','project_admin_'.$project->id)->value('id');
 
-        $role = Role::find($role_id);
+        $role=Role::find($role_id);
+
+        $role->users()->sync($request->project_admin);
+
+        $role->users()->attach($user->id);
+
+        foreach($admin_users as $ausers)
+        {
+            if(User::checkifRoleAttached($ausers->id,$role_id))
+            {
+                $role->users()->attach($ausers->id);  
+            }
+        }
         
-        if(!empty($request->project_admin))
-        {
-            foreach($request->project_admin as $user_id)
-            {
-                $user=User::find($user_id);
-                if(User::checkifRoleAttached($user,$role))
-                {
-                    $user->roles()->attach($role_id);        
-                }
-            } 
-        }
-
-        //delete the projectadmin permission if user is no longer part of any project.
-        $get_all_other_projects = Project::where('id','<>',$project->id)->get();
-
-        foreach($project->users as $current_project_user)
-        {
-            $delete_role=0;
-            
-            foreach($get_all_other_projects as $other_projects)
-            {
-                foreach($other_projects->users as $user)
-                {
-                    if($user->id == $current_project_user->id)
-                    {
-                        $delete_role=1;
-                        break;
-                    }
-                }
-            }
-            
-            if($delete_role==0)
-            {
-                $role_id=Role::where('name',"projectadmin")->value('id');
-                DB::table('role_user')
-                    ->where('user_id',$current_project_user->id)
-                    ->where('role_id',$role_id)
-                    ->delete();
-            }
-        }
-
         session()->flash('message','Project updated successfully!');
             
         return(redirect('/projects'));
@@ -216,37 +195,36 @@ class ProjectsController extends Controller
 
     public function delete(Project $project)
     {
-        //delete the projectadmin permission if user is no longer part of any project.
-        $get_all_other_projects = Project::where('id','<>',$project->id)->get();
-
-        foreach($project->users as $current_project_user)
-        {
-            $delete_role=0;
-            
-            foreach($get_all_other_projects as $other_projects)
-            {
-                foreach($other_projects->users as $user)
-                {
-                    if($user->id == $current_project_user->id)
-                    {
-                        $delete_role=1;
-                        break;
-                    }
-                }
-            }
-            
-            if($delete_role==0)
-            {
-                $role_id=Role::where('name',"projectadmin")->value('id');
-                DB::table('role_user')
-                    ->where('user_id',$current_project_user->id)
-                    ->where('role_id',$role_id)
-                    ->delete();
-            }
-        }
+        Permission::where('project_id',$project->id)->delete();
+        Role::where('project_id',$project->id)->delete();
 
         $project->delete();// delete the project itself
         session()->flash('message','Project deleted Successfully');
         return back();
     }
+
+    public function ideas(Project $project)
+    {
+        $project_id="";
+
+        $user=Auth::user();
+
+        if(Session::has('project_id'))
+        {
+             $project_id=Session::get('project_id');
+        }
+
+        if(auth()->user()->can('admin_project_'.$project_id) or auth()->user()->can('add_admin'))
+        {
+            $ideas=Idea::where('project_id',$project->id)->paginate(50);
+            return view('projects.viewideas',compact('ideas','project'));
+        }
+        else
+        {
+             return view('errors.403');
+        }
+
+
+    }
+
 }

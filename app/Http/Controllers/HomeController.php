@@ -21,7 +21,6 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-
     /**
      * Show the application dashboard.
      *
@@ -39,7 +38,7 @@ class HomeController extends Controller
 
         if(!empty($project_id))
         {
-            Session::put('is_projectadmin','Yes');
+            Session::put('project_id',$project_id);
         }
 
         $user_count=User::count();
@@ -55,7 +54,7 @@ class HomeController extends Controller
 
         
         //Top % Ideas
-        $ideas=Idea::orderBy('updated_at','desc')->get();
+        $ideas=Idea::orderBy('updated_at','desc')->paginate(50);
 
         return view('home',compact('user_count','idea_count','comment_count','myidea_count','ideas','tag_ideas'));
     }

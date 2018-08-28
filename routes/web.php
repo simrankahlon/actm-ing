@@ -77,3 +77,6 @@ Route::get('/users','UserController@list')->middleware('revalidate','gateauth');
 Route::get('/ajax/admin/{user}/{checked}','UserController@makeAdmin')->middleware('revalidate');
 
 
+//View Project specific ideas for the Project Admins.
+Route::get('/projects/{project}/ideas','ProjectsController@ideas')->middleware('revalidate');
+

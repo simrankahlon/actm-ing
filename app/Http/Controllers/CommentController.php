@@ -10,7 +10,11 @@ use Auth;
 
 class CommentController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function viewComment(Comment $comment)
     {
     	return \Response::json($comment);

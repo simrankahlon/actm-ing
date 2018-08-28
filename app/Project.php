@@ -24,16 +24,17 @@ class Project extends Model
         $role=new Role();
         $role->name='project_admin_'. $project_id;
         $role->label='Project Admin';
+        $role->project_id=$project_id;
         $role->save();
 
         $permission=new Permission();
         $permission->name='admin_project_'. $project_id;
         $permission->label='Admin Project';
+        $permission->project_id=$project_id;
         $permission->save();
 
         $user=User::find(auth()->user()->id);
-        $user->assignRole($role->name);
-
+        
         $role->givePermissionTo($permission);
         
         $roleadmin=Role::where('name','administrator')->first();

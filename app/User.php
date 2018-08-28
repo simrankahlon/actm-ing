@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -58,11 +59,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class, 'project_user')->withTimestamps();
     }
 
-    public static function checkifRoleAttached($user,$role)
+    public static function checkifRoleAttached($user_id,$role_id)
     {
         $role_id=DB::table('role_user')
-                    ->where('role_id',$role->id)
-                    ->where('user_id',$user->id)
+                    ->where('role_id',$role_id)
+                    ->where('user_id',$user_id)
                     ->value('role_id');
 
         if(empty($role_id))
@@ -95,5 +96,39 @@ class User extends Authenticatable
     public function assignRole($role){
         $role = Role::whereName($role)->firstOrFail();
         return $this->roles()->attach([$role->id]);
+    }
+
+    public static function checkifAlreadyAttached($user_id,$project_id)
+    {
+        $project_id=DB::table('project_user')
+                    ->where('project_id',$project_id)
+                    ->where('user_id',$user_id)
+                    ->value('project_id');
+
+        if(empty($project_id))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static function checkifAttachedToProjectRole($user_id,$project_id)
+    {
+        $role_name=Role::join('role_user','roles.id','=','role_user.role_id')
+                               ->where('roles.project_id',$project_id)
+                               ->where('role_user.user_id',$user_id)
+                               ->first();
+
+        if(empty($role_name))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

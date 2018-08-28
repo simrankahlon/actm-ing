@@ -33,19 +33,19 @@
             </div>
                             
             <div class="form-group">
-                <label for="opportunity1">Opportunity</label> <span style="color:red">*</span>
-                <textarea name ="opportunity1" class="form-control" id="opportunity1" placeholder="opportunity">{{old('opportunity1')}}</textarea>
+                <label for="opportunity">Opportunity</label> <span style="color:red">*</span>
+                <textarea name ="opportunity" class="form-control" id="opportunity" placeholder="opportunity">{{old('opportunity')}}</textarea>
                 <span style="color:red">{{ $errors->first('opportunity') }}</span>
             </div>
 
             <div class="form-group">
-                <label for="implementation">What goes into Implementing this ?</label> <span style="color:red">*</span>
+                <label for="implementation">What goes into Implementing this ?</label>
                 <textarea name ="implementation" class="form-control" id="implementation" placeholder="What goes into Implementing this ?">{{old('implementation')}}</textarea>
                 <span style="color:red">{{ $errors->first('implementation') }}</span>
             </div>
 
             <div class="form-group">
-                <label for="added_benefits">Added Benefits</label> <span style="color:red">*</span>
+                <label for="added_benefits">Added Benefits</label>
                 <textarea name ="added_benefits" class="form-control" id="added_benefits" placeholder="Added Benefits">{{old('added_benefits')}}</textarea>
                 <span style="color:red">{{ $errors->first('added_benefits') }}</span>
             </div>
@@ -58,9 +58,6 @@
                     @endforeach
                 </select>
             </div>
-
-            <textarea name ="opportunity" class="form-control" id="opportunity" style="display:none;" placeholder="Details">{{old('opportunity')}}</textarea>
-
         </div>
                             
         <div class="card-footer">
@@ -74,13 +71,7 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
   $(".chosen-select").chosen({width: "100%"});
-  $("#opportunity1").Editor();
 
-});
-
-$( "#addForm" ).submit(function( event ) {
-    var text = $("#opportunity1").Editor("getText");
-    $("#opportunity").val(text);
 });
 </script>
 @endsection

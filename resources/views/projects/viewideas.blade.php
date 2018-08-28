@@ -2,8 +2,9 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item active">Dashboard
-    </li>
+    <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('/projects') }}">Project</a></li>
+    <li class="breadcrumb-item active">{{$project->name}}</li>
     <li class="breadcrumb-menu">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <a class="btn btn-secondary" href="{{ url('/ideas/create') }}"><i class="icon-plus"></i> &nbsp;Create Ideas </a>
@@ -26,6 +27,7 @@
                 <th>Problem Statement</th>
                 <th>Activity</th>
                 <th>Tagged</th>
+                <th>Current Status</th>
                 <th><div class="float-xs-right">Action</div></th>
             </tr>
         </thead>
@@ -76,6 +78,9 @@
                             @endif
                         </div>
                     </td>
+                    <td>
+                        <div>{{$idea->current_status}}</div>
+                    </td>
                 	<td>
                     	<div class="float-xs-right">
                             @if($idea->user_id == $user_id)
@@ -94,7 +99,7 @@
             	</tr>
            @endforeach
            <tr>
-               <td colspan="6" align="right">
+               <td colspan="7" align="right">
                    <nav>
                        {{$ideas->links()}}
                    </nav>
