@@ -82,7 +82,19 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label for="tag_users">Mark as Updated</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-check-input" type="checkbox" id="inline-checkbox1" value="check1">
+                </div>
+            </div>
+            
+
         </div>
+
+
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>

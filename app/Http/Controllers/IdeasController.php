@@ -42,20 +42,21 @@ class IdeasController extends Controller
         $idea->opportunity=request('opportunity');
         $idea->implementation=request('implementation');
         $idea->benefits=request('added_benefits');
-
+        $idea->current_status='New';
         $idea->save();
+        DB::table('idea_status')->insert(['idea_id' =>$idea->id, 'status' =>'New','updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
         $idea->users()->sync($request->tag_users);
-        
+          
     	session()->flash('message','Idea added successfully!');
     	
-    	return(redirect('/ideas'));
+    	return(redirect('/home'));
     }
 
-    public function list()
+    /*public function list()
     {
     	$ideas=Idea::orderBy('updated_at','desc')->paginate(50);
     	return view('ideas.view',compact('ideas'));
-    }
+    }*/
 
     public function edit(Idea $idea)
     {

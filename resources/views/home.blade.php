@@ -26,6 +26,7 @@
                 <th>Problem Statement</th>
                 <th>Activity</th>
                 <th>Tagged</th>
+                <th>Status</th>
                 <th><div class="float-xs-right">Action</div></th>
             </tr>
         </thead>
@@ -76,11 +77,34 @@
                             @endif
                         </div>
                     </td>
+                    <td>
+                        @if($idea->current_status=='RETURNFORUPDATION' or $idea->current_status=='REJECTED')
+                            <div class="float-xs-left text-danger">
+                                <strong>{{App\Http\IngeniousUtilities\IdeaStatus::lookup($idea->current_status)}}</strong>
+                            </div>
+                        @elseif($idea->current_status=='ACCEPTED' or $idea->current_status=='SHAREDFORAPPROVAL')
+                            <div class="float-xs-left text-success">
+                                <strong>{{App\Http\IngeniousUtilities\IdeaStatus::lookup($idea->current_status)}}</strong>
+                            </div>
+                        @else
+                            <div class="float-xs-left text-info">
+                                <strong>{{$idea->current_status}}
+                            </div>
+                        @endif  
+                    </td>
                 	<td>
                     	<div class="float-xs-right">
                             @if($idea->user_id == $user_id)
-                                <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
-                                <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
+                                @if($idea->current_status=='Under Review')
+                                    <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'" disabled>Edit</button>
+                                @else
+                                    <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
+                                @endif
+                                @if($idea->current_status=='Under Review')
+                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')" disabled>Delete</button>
+                                @else
+                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
+                                @endif
                             @else
                                 @if(App\Idea::checkIfLiked($idea))
                                     <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i> Unlike</button>
@@ -88,13 +112,13 @@
                                     <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/like') }}'"><i class="icon-like"></i> Like</button>
                                 @endif
                             @endif
-                            <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-secondary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
+                            <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-info btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
                         </div>
                 	</td>
             	</tr>
            @endforeach
            <tr>
-               <td colspan="6" align="right">
+               <td colspan="7" align="right">
                    <nav>
                        {{$ideas->links()}}
                    </nav>

@@ -80,3 +80,9 @@ Route::get('/ajax/admin/{user}/{checked}','UserController@makeAdmin')->middlewar
 //View Project specific ideas for the Project Admins.
 Route::get('/projects/{project}/ideas','ProjectsController@ideas')->middleware('revalidate');
 
+//View individual idea in the project.
+Route::get('/project/{project}/ideas/{idea}/comments','ProjectsController@viewIdea')->middleware('revalidate');
+
+//Change Status
+Route::get('/project/{project}/ideas/{idea}/status','ProjectsController@status')->middleware('revalidate');
+Route::post('/project/{project}/ideas/{idea}/status','ProjectsController@addStatus')->middleware('revalidate');

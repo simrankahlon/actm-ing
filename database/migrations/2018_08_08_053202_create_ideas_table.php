@@ -23,6 +23,7 @@ class CreateIdeasTable extends Migration
             $table->longText('implementation')->nullable();
             $table->longText('benefits')->nullable();
             $table->string('current_status')->nullable();
+            $table->integer('current_status_id')->nullable();
             $table->timestamps();
         });
     }

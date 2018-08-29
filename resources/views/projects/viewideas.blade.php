@@ -3,7 +3,7 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
-    <li class="breadcrumb-item"><a href="{{ url('/projects') }}">Project</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('/projects') }}">Projects</a></li>
     <li class="breadcrumb-item active">{{$project->name}}</li>
     <li class="breadcrumb-menu">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -79,21 +79,21 @@
                         </div>
                     </td>
                     <td>
-                        <div>{{$idea->current_status}}</div>
+                        @if($idea->current_status=='RETURNFORUPDATION' or $idea->current_status=='REJECTED')
+                            <div class="float-xs-left text-danger">
+                        @elseif($idea->current_status=='ACCEPTED' or $idea->current_status=='SHAREDFORAPPROVAL')
+                            <div class="float-xs-left text-success">
+                        @elseif($idea->current_status=='Under Review')
+                            <div class="float-xs-left text-muted">
+                        @else
+                            <div class="float-xs-left text-info">
+                        @endif
+                            <strong>{{$idea->current_status}}</div>  
                     </td>
                 	<td>
                     	<div class="float-xs-right">
-                            @if($idea->user_id == $user_id)
-                                <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
-                                <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
-                            @else
-                                @if(App\Idea::checkIfLiked($idea))
-                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i> Unlike</button>
-                                @else
-                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/like') }}'"><i class="icon-like"></i> Like</button>
-                                @endif
-                            @endif
-                            <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-secondary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
+                            <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/comments') }}'">View</button>
+                            <button type="button" id="ideaStatus-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/status') }}'">Status</button>
                         </div>
                 	</td>
             	</tr>

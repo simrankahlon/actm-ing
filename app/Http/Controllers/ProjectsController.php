@@ -227,4 +227,78 @@ class ProjectsController extends Controller
 
     }
 
+    public function viewIdea(Project $project,Idea $idea)
+    {
+        $user=Auth::user();
+
+        if(auth()->user()->can('admin_project_'.$project->id) or auth()->user()->can('add_admin'))
+        {
+            if($idea->user_id!=$user->id)
+            {
+                $user_id=DB::table('idea_view')
+                        ->where('idea_view.idea_id',$idea->id)
+                        ->where('idea_view.user_id',$user->id)
+                        ->value('idea_view.user_id');
+
+            
+                if(empty($user_id))
+                {
+                    $idea->views()->attach($user->id);    
+                }
+            }
+
+            if($idea->current_status!='Under Review')
+            {
+                $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>'Under Review','user_id' => $user->id,'updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
+                $idea->current_status='Under Review';
+                $idea->current_status_id=$current_status_id;
+                $idea->update();
+            }
+            return view('projects.idea',compact('idea','project'));
+        }
+        else
+        {
+            return view('errors.403');
+        }
+    }
+
+    public function status(Project $project,Idea $idea)
+    {
+        $user=Auth::user();
+
+        if(auth()->user()->can('admin_project_'.$project->id) or auth()->user()->can('add_admin'))
+        {
+            return view('projects.status',compact('project','idea'));
+        }
+        else
+        {
+            return view('errors.403');
+        }
+    }
+
+    public function addStatus(Request $request,Project $project,Idea $idea)
+    {
+        $user=Auth::user();
+
+        if(auth()->user()->can('admin_project_'.$project->id) or auth()->user()->can('add_admin'))
+        {
+            $this->validate($request,[
+                  'status' => 'required',
+                  'remark' => 'required'
+                  ]);
+
+            $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>$request->status,'user_id' => $user->id,'remark'=>$request->remark,'updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
+            $idea->current_status=$request->status;
+            $idea->current_status_id=$current_status_id;
+            $idea->update();
+
+            session()->flash('message','Status updated successfully!');
+            return(redirect('/projects/'.$project->id.'/ideas'));
+        }
+        else
+        {
+            return view('errors.403');
+        }
+    }
+
 }

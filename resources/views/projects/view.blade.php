@@ -25,7 +25,7 @@
                         <th>Name</th>
                         <th>Admins</th>
                         <th>Activity</th>
-                        <th>Action</th>
+                        <th><div class="float-xs-right">Action</div></th>
                     </tr>
                 </thead>
                 <tbody>

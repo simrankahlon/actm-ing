@@ -34,7 +34,7 @@
                             
             <div class="form-group">
                 <label for="opportunity">Opportunity</label> <span style="color:red">*</span>
-                <textarea name ="opportunity" class="form-control" id="opportunity" placeholder="opportunity">{{old('opportunity')}}</textarea>
+                <textarea name ="opportunity" class="form-control" id="opportunity" placeholder="Opportunity">{{old('opportunity')}}</textarea>
                 <span style="color:red">{{ $errors->first('opportunity') }}</span>
             </div>
 
