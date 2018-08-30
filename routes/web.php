@@ -86,3 +86,9 @@ Route::get('/project/{project}/ideas/{idea}/comments','ProjectsController@viewId
 //Change Status
 Route::get('/project/{project}/ideas/{idea}/status','ProjectsController@status')->middleware('revalidate');
 Route::post('/project/{project}/ideas/{idea}/status','ProjectsController@addStatus')->middleware('revalidate');
+
+//status history for ideas on home page.
+Route::get('/ideas/{idea}/statushistory','IdeasController@statushistory')->middleware('revalidate');
+
+//status history for ideas on project page.
+Route::get('/project/{project}/ideas/{idea}/statushistory','ProjectsController@statushistory')->middleware('revalidate');

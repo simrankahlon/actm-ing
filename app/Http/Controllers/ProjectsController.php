@@ -247,7 +247,7 @@ class ProjectsController extends Controller
                 }
             }
 
-            if($idea->current_status!='Under Review')
+            if($idea->current_status =='New' or $idea->current_status=='Updated')
             {
                 $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>'Under Review','user_id' => $user->id,'updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
                 $idea->current_status='Under Review';
@@ -299,6 +299,26 @@ class ProjectsController extends Controller
         {
             return view('errors.403');
         }
+    }
+
+
+    public function statushistory(Project $project,Idea $idea)
+    {
+        $user=Auth::user();
+
+        if(auth()->user()->can('admin_project_'.$project->id) or auth()->user()->can('add_admin'))
+        {
+            $idea_status=DB::table('idea_status')
+                ->where('idea_id',$idea->id)
+                ->paginate(50);
+        
+            return view('projects.statushistory',compact('idea','idea_status','project'));
+        }
+        else
+        {
+            return view('errors.403');
+        }
+
     }
 
 }

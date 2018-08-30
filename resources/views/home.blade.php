@@ -95,12 +95,12 @@
                 	<td>
                     	<div class="float-xs-right">
                             @if($idea->user_id == $user_id)
-                                @if($idea->current_status=='Under Review')
+                                @if($idea->current_status=='Under Review' or $idea->current_status == 'ACCEPTED' or $idea->current_status == 'SHAREDFORAPPROVAL' or $idea->current_status == 'REJECTED')
                                     <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'" disabled>Edit</button>
                                 @else
                                     <button type="button" id="ideaEdit-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/edit') }}'">Edit</button>
                                 @endif
-                                @if($idea->current_status=='Under Review')
+                                @if($idea->current_status=='Under Review' or $idea->current_status == 'ACCEPTED' or $idea->current_status == 'SHAREDFORAPPROVAL' or $idea->current_status == 'REJECTED')
                                     <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')" disabled>Delete</button>
                                 @else
                                     <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-outline-danger btn-sm" onclick="javascript:confirmDelete('{{ url('/ideas/'.$idea->id.'/delete') }}')">Delete</button>
@@ -113,6 +113,7 @@
                                 @endif
                             @endif
                             <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-info btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
+                            <button type="button" id="StatusHistory-{{$idea->id}}" class="btn btn-link btn-sm"  onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/statushistory') }}'" style="color:green;">Status History</button>
                         </div>
                 	</td>
             	</tr>

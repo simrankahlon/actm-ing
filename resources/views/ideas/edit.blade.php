@@ -82,14 +82,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label for="tag_users">Mark as Updated</label>
+            @if($idea->current_status == 'RETURNFORUPDATION')
+                <div class="form-group">
+                    <label for="mark_as_updated"><strong>Mark as Updated</strong></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="form-check-input" type="checkbox" id="mark_as_updated" name="mark_as_updated">
                 </div>
-                <div class="col-md-10">
-                    <input class="form-check-input" type="checkbox" id="inline-checkbox1" value="check1">
-                </div>
-            </div>
+            @endif
             
 
         </div>

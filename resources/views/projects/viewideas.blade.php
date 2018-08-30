@@ -5,11 +5,6 @@
     <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
     <li class="breadcrumb-item"><a href="{{ url('/projects') }}">Projects</a></li>
     <li class="breadcrumb-item active">{{$project->name}}</li>
-    <li class="breadcrumb-menu">
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-secondary" href="{{ url('/ideas/create') }}"><i class="icon-plus"></i> &nbsp;Create Ideas </a>
-        </div>
-    </li>
 </ol>
 @endsection
 @section('content')
@@ -81,19 +76,31 @@
                     <td>
                         @if($idea->current_status=='RETURNFORUPDATION' or $idea->current_status=='REJECTED')
                             <div class="float-xs-left text-danger">
+                                <strong>{{App\Http\IngeniousUtilities\IdeaStatus::lookup($idea->current_status)}}</strong>
+                            </div>
                         @elseif($idea->current_status=='ACCEPTED' or $idea->current_status=='SHAREDFORAPPROVAL')
                             <div class="float-xs-left text-success">
-                        @elseif($idea->current_status=='Under Review')
-                            <div class="float-xs-left text-muted">
+                                <strong>{{App\Http\IngeniousUtilities\IdeaStatus::lookup($idea->current_status)}}</strong>
+                            </div>
                         @else
                             <div class="float-xs-left text-info">
-                        @endif
-                            <strong>{{$idea->current_status}}</div>  
+                                <strong>{{$idea->current_status}}
+                            </div>
+                        @endif  
                     </td>
                 	<td>
                     	<div class="float-xs-right">
                             <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/comments') }}'">View</button>
-                            <button type="button" id="ideaStatus-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/status') }}'">Status</button>
+                            @if($idea->current_status == 'ACCEPTED' or $idea->current_status == 'SHAREDFORAPPROVAL' or $idea->current_status == 'REJECTED')
+                                @if(auth()->user()->can('add_admin'))
+                                    <button type="button" id="ideaStatus-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/status') }}'">Status</button>
+                                @else
+                                    <button type="button" id="ideaStatus-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/status') }}'" disabled>Status</button>
+                                @endif
+                            @else
+                                <button type="button" id="ideaStatus-{{$idea->id}}" class="btn btn-outline-success btn-sm" onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/status') }}'">Status</button>
+                            @endif
+                            <button type="button" id="StatusHistory-{{$idea->id}}" class="btn btn-link btn-sm"  onclick="window.location.href='{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/statushistory') }}'" style="color:grey;">Status History</button>
                         </div>
                 	</td>
             	</tr>

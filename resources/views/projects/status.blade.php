@@ -8,7 +8,7 @@
     <li class="breadcrumb-item active">{{$idea->problem_statement}}</li>
     <li class="breadcrumb-menu ">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-secondary" href="{{ url('/ideas/create') }}"><i class="icon-plus"></i> &nbsp;Status History </a>
+            <a class="btn btn-secondary" href="{{ url('/project/'.$project->id.'/ideas/'.$idea->id.'/statushistory') }}"><i class="icon-note"></i> &nbsp;Status History </a>
         </div>
     </li>
 </ol>

@@ -69,7 +69,8 @@ class IdeasController extends Controller
     public function update(Idea $idea, Request $request)
     {
     	$user=Auth::user();
-    	$this->validate($request,[
+
+        $this->validate($request,[
               'problem_statement' => 'required',
               'project' => 'required',
               'opportunity' =>'required',
@@ -83,9 +84,21 @@ class IdeasController extends Controller
         $idea->benefits=request('added_benefits');
         $idea->update();
         $idea->users()->sync($request->tag_users);
+
+        if($idea->current_status=='RETURNFORUPDATION')
+        {
+            if($request->mark_as_updated=='on')
+            {
+                $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>'Updated','updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
+                $idea->current_status='Updated';
+                $idea->current_status_id=$current_status_id;
+                $idea->update();
+
+            }
+        }
     	session()->flash('message','Idea updated successfully!');
     	
-    	return(redirect('/ideas'));
+    	return(redirect('/home'));
     }
 
     public function delete(Idea $idea)
@@ -135,6 +148,15 @@ class IdeasController extends Controller
 
         session()->flash('message','You dislike the Idea');
         return back();
+    }
+
+    public function statushistory(Idea $idea)
+    {
+        $idea_status=DB::table('idea_status')
+            ->where('idea_id',$idea->id)
+            ->paginate(50);
+        
+        return view('ideas.statushistory',compact('idea','idea_status'));
     }
 
 
