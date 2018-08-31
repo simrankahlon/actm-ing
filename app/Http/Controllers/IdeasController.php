@@ -8,6 +8,7 @@ use Auth;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Project;
+use App\Draft;
 
 class IdeasController extends Controller
 {
@@ -28,28 +29,55 @@ class IdeasController extends Controller
     public function store(Request $request)
     {
     	$user=Auth::user();
-    	$this->validate($request,[
-    	      'problem_statement' => 'required',
-              'project' => 'required',
-    	      'opportunity' =>'required',
-              
-    	      ]);
+        switch ($request->input('save')) {
+            case 'save':
+                        $this->validate($request,[
+                              'problem_statement' => 'required',
+                              'project' => 'required',
+                              'opportunity' =>'required',
+                              
+                              ]);
 
-    	$idea = new Idea;
-    	$idea->user_id=$user->id;
-    	$idea->problem_statement=request('problem_statement');
-    	$idea->project_id=request('project');
-        $idea->opportunity=request('opportunity');
-        $idea->implementation=request('implementation');
-        $idea->benefits=request('added_benefits');
-        $idea->current_status='New';
-        $idea->save();
-        DB::table('idea_status')->insert(['idea_id' =>$idea->id, 'status' =>'New','updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
-        $idea->users()->sync($request->tag_users);
-          
-    	session()->flash('message','Idea added successfully!');
+                        $idea = new Idea;
+                        $idea->user_id=$user->id;
+                        $idea->problem_statement=request('problem_statement');
+                        $idea->project_id=request('project');
+                        $idea->opportunity=request('opportunity');
+                        $idea->implementation=request('implementation');
+                        $idea->benefits=request('added_benefits');
+                        $idea->current_status='New';
+                        $idea->save();
+                        DB::table('idea_status')->insert(['idea_id' =>$idea->id, 'status' =>'New','updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
+                        $idea->users()->sync($request->tag_users);
+                          
+                        session()->flash('message','Idea added successfully!');
+                        
+                        return(redirect('/user/ideas'));
+
+                    break;
+            
+            case 'draft':
+                        $this->validate($request,[
+                              'problem_statement' => 'required',
+                              ]);
+
+                        $draft = new Draft;
+                        $draft->user_id=$user->id;
+                        $draft->problem_statement=request('problem_statement');
+                        $draft->project_id=request('project');
+                        $draft->opportunity=request('opportunity');
+                        $draft->implementation=request('implementation');
+                        $draft->benefits=request('added_benefits');
+                        $draft->save();
+                        
+                        $draft->users()->sync($request->tag_users);
+                          
+                        session()->flash('message','Idea added as draft successfully!');
+                        
+                        return(redirect('/user/ideas/drafts'));
+
+        }
     	
-    	return(redirect('/home'));
     }
 
     /*public function list()
@@ -89,8 +117,8 @@ class IdeasController extends Controller
         {
             if($request->mark_as_updated=='on')
             {
-                $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>'Updated','updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
-                $idea->current_status='Updated';
+                $current_status_id=DB::table('idea_status')->insertGetId(['idea_id' =>$idea->id, 'status' =>'Resubmitted','user_id'=>$user->id,'updated_at'=> new \DateTime(),'created_at'=>new \DateTime()]);
+                $idea->current_status='Resubmitted';
                 $idea->current_status_id=$current_status_id;
                 $idea->update();
 
@@ -98,7 +126,7 @@ class IdeasController extends Controller
         }
     	session()->flash('message','Idea updated successfully!');
     	
-    	return(redirect('/home'));
+    	return(redirect('/user/ideas'));
     }
 
     public function delete(Idea $idea)
@@ -157,6 +185,16 @@ class IdeasController extends Controller
             ->paginate(50);
         
         return view('ideas.statushistory',compact('idea','idea_status'));
+    }
+
+
+    public function userideas()
+    {
+        $user=Auth::user();
+
+        $ideas=Idea::where('user_id',$user->id)->paginate(50);
+
+        return view('ideas.useridea',compact('ideas'));
     }
 
 

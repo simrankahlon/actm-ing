@@ -1,3 +1,12 @@
+<style>
+.remark {
+    display: inline-block;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+</style>
 @extends('layouts.app')
 @section('breadcrumb')
 <ol class="breadcrumb">
@@ -59,7 +68,7 @@
                                 @endif 
                             </td>
                             <td>
-                                <div class="float-xs-left">
+                                <div class="float-xs-left remark" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="top" title="{{$i_status->remark}}" style="font-size:115%;">
                                     {{$i_status->remark}}
                                 </div>
                             </td>
@@ -87,5 +96,8 @@
 @endsection
 @section('javascriptfunctions')
 <script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
 @endsection

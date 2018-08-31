@@ -19,6 +19,11 @@ class Project extends Model
         return $this->hasMany(Idea::class);
     }
 
+    public function drafts()
+    {
+        return $this->hasMany(Draft::class);
+    }
+
     public static function create_admin_role_permission_for_project($project_id)
     {
         $role=new Role();

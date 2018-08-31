@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-   <li class="breadcrumb-item"><a href="{{ url('/home') }}">Ideas</a></li>
+   <li class="breadcrumb-item"><a href="{{ url('/user/ideas') }}">Ideas</a></li>
    <li class="breadcrumb-item active">Edit Idea</li>
 </ol>
 @endsection
@@ -38,7 +38,7 @@
                             
             <div class="form-group">
                 <label for="opportunity">Opportunity</label> <span style="color:red">*</span>
-                <textarea name ="opportunity" class="form-control" id="opportunity" placeholder="opportunity">{{$idea->opportunity}}</textarea>
+                <textarea name ="opportunity" class="form-control" id="opportunity" placeholder="Opportunity">{{$idea->opportunity}}</textarea>
                 <span style="color:red">{{ $errors->first('opportunity') }}</span>
             </div>
 
@@ -84,7 +84,7 @@
             </div>
             @if($idea->current_status == 'RETURNFORUPDATION')
                 <div class="form-group">
-                    <label for="mark_as_updated"><strong>Mark as Updated</strong></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="mark_as_updated"><strong>Mark as Resubmitted</strong></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input class="form-check-input" type="checkbox" id="mark_as_updated" name="mark_as_updated">
                 </div>
             @endif
@@ -96,7 +96,7 @@
                             
         <div class="card-footer">
             <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-            <a href="{{ url('/home') }}" class="btn btn-default">Cancel</a>
+            <a href="{{ url('/user/ideas') }}" class="btn btn-default">Cancel</a>
         </div>                      
     </form>
 </div>

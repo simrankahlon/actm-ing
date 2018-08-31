@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->hasMany(Idea::class);
     }
 
+    public function drafts()
+    {
+        return $this->hasMany(Draft::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
