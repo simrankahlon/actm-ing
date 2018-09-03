@@ -24,15 +24,14 @@
                     <i class="icon-bubbles"></i> 
                     {{$idea->problem_statement}}
                 </h3>
-                <div class="col-md-2">
+                <div class="col-md-5">
                     <strong><i class="icon-user"></i>&nbsp;
                     <small class="text-info">{{App\Idea::userName($idea->user_id)}}</small></strong>
                     <div>
                         <strong><i class="icon-layers"></i>&nbsp;
                         <small class="text-info">{{App\Idea::getProjectName($idea->project_id)}}</small></strong>       
                     </div>
-                </div>
-                <div class="col-md-8">
+                    <div>
                         @php
                             $user_name = array();
                             $users=App\Idea::getTaggedUsers($idea);
@@ -45,21 +44,57 @@
                         <strong>
                             <i class="icon-tag"></i>&nbsp;<small class="text-info">{{$user_array}}</small>
                         </strong>
+                    </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-7">
                     <h6>
                         <strong>
-                            <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+
+                            <!-- Like -->
+                            <a href="" class="nav-link" style="color:black;">
+                                <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
+                                </i>
+                            </a>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
                                 $list=App\Idea::getLikeList($idea);
                                 foreach($list as $user)
                                 {
                                     echo $user->name;
                                     echo "<br>";
                                 }
-                                @endphp" style="font-size:115%;">
-                            </i>
-                            <span class="text-info">{{App\Idea::getLikeCount($idea)}}</span>
-                            &nbsp;&nbsp;
+                                @endphp">{{App\Idea::getLikeCount($idea)}}</span>
+                            &nbsp;
+                            <!-- DisLike -->
+                            <a href="" class="nav-link" style="color:black;">
+                                <i class="icon-dislike" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
+                                </i>
+                            </a>
+                            <span class="text-info">100</span>
+                            &nbsp;
+                            <!-- Needs work -->
+                            <a href="" class="nav-link" style="color:black;">
+                                <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
+                                </i>
+                            </a>
+                            <span class="text-info">100</span>
+                            &nbsp;
+
+                            <!-- didnt follow -->
+                            <a href="" class="nav-link" style="color:black;">
+                                <i class="icon-puzzle" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
+                                </i>
+                            </a>
+                            <span class="text-info">100</span>
+                            &nbsp;
+                            <!-- complex -->
+                            <a href="" class="nav-link" style="color:black;">
+                                <i class="icon-user-unfollow" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
+                                </i>
+                            </a>
+                            <span class="text-info">100</span>
+                            
+                            &nbsp;
+                            <!-- No of views -->
                             <i class="icon-user-following" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
                                 $list=App\Idea::getViewList($idea);
                                 foreach($list as $user)
