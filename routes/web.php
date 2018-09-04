@@ -38,11 +38,6 @@ Route::post('/ideas/{idea}/edit','IdeasController@update')->middleware('revalida
 //Delete Idea Functionality
 Route::get('/ideas/{idea}/delete','IdeasController@delete')->middleware('revalidate','gateauth');
 
-//Like Ideas.
-Route::get('/ideas/{idea}/like','IdeasController@like')->middleware('revalidate','gateauth');
-//Dislike Ideas.
-Route::get('/ideas/{idea}/dislike','IdeasController@dislike')->middleware('revalidate','gateauth');
-
 //View individual comment of user ideas.
 Route::get('/ideas/{idea}/comments','IdeasController@viewComments')->middleware('revalidate','gateauth');
 
@@ -105,3 +100,6 @@ Route::post('/drafts/{draft}/edit','DraftsController@update')->middleware('reval
 
 //Delete Idea Functionality
 Route::get('/drafts/{draft}/delete','DraftsController@delete')->middleware('revalidate','gateauth');
+
+//Ajax Add Ratings
+Route::get('/ajax/addRatings/','IdeasController@addRatings')->middleware('revalidate','gateauth');

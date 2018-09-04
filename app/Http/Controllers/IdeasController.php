@@ -158,14 +158,20 @@ class IdeasController extends Controller
         return view('ideas.viewcomments',compact('idea'));
     }
 
-    public function like(Idea $idea)
+    public function addRatings(Request $request)
     {
         $user=Auth::user();
-        $idea->likes()->attach($user->id);
-        session()->flash('message','You liked the Idea');
-        return back();
-    }
+        echo $request->idea_id;
+        $idea=Idea::find($request->idea_id);
 
+        $data = [
+        'idea' => $request->rating_type,
+        ];
+        $idea->ratings()->attach($user->id,array('rating_type' => $request->rating_type));
+        
+        return \Response::json($data);
+    }
+    
     public function dislike(Idea $idea)
     {
         $user=Auth::user();

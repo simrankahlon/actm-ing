@@ -93,13 +93,6 @@
                     </td>
                 	<td>
                     	<div class="float-xs-right">
-                            @if($idea->user_id != $user_id)
-                                @if(App\Idea::checkIfLiked($idea))
-                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-danger btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/dislike') }}'"><i class="icon-dislike"></i> Unlike</button>
-                                @else
-                                    <button type="button" id="ideaDelete-{{$idea->id}}" class="btn btn-success btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/like') }}'"><i class="icon-like"></i> Like</button>
-                                @endif
-                            @endif
                             <button type="button" id="ideaComment-{{$idea->id}}" class="btn btn-link btn-sm" onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/comments') }}'">View</button>
                             <button type="button" id="StatusHistory-{{$idea->id}}" class="btn btn-link btn-sm"  onclick="window.location.href='{{ url('/ideas/'.$idea->id.'/statushistory') }}'" style="color:green;">Status History</button>
                         </div>

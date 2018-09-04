@@ -19,9 +19,9 @@ class Idea extends Model
 		return $this->belongsToMany(User::class, 'idea_user')->withTimestamps();
 	}
 
-	public function likes()
+	public function ratings()
 	{
-		return $this->belongsToMany(User::class,'idea_like')->withTimestamps();
+		return $this->belongsToMany(User::class,'idea_ratings')->withPivot('rating_type')->withTimestamps();
 	}
 
 	public function views()

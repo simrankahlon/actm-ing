@@ -51,49 +51,70 @@
                         <strong>
 
                             <!-- Like -->
-                            <a href="" class="nav-link" style="color:black;">
+                            @if($user_id==$idea->user_id)
                                 <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
                                 </i>
-                            </a>
-                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
-                                $list=App\Idea::getLikeList($idea);
-                                foreach($list as $user)
-                                {
-                                    echo $user->name;
-                                    echo "<br>";
-                                }
-                                @endphp">{{App\Idea::getLikeCount($idea)}}</span>
+                            @else
+                                <a href="#" class="nav-link addRating" style="color:black;" id="like">
+                                    <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
+                                    </i>
+                                </a>
+                            @endif
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title=""></span>
                             &nbsp;
+
                             <!-- DisLike -->
-                            <a href="" class="nav-link" style="color:black;">
+                            @if($user_id==$idea->user_id)
                                 <i class="icon-dislike" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
                                 </i>
-                            </a>
-                            <span class="text-info">100</span>
-                            &nbsp;
-                            <!-- Needs work -->
-                            <a href="" class="nav-link" style="color:black;">
-                                <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
-                                </i>
-                            </a>
+                            @else
+                                <a href="#" class="nav-link addRating" style="color:black;" id="dislike">
+                                    <i class="icon-dislike" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
+                                    </i>
+                                </a>
+                            @endif
                             <span class="text-info">100</span>
                             &nbsp;
 
-                            <!-- didnt follow -->
-                            <a href="" class="nav-link" style="color:black;">
+                            <!-- Needs work -->
+                            @if($user_id==$idea->user_id)
+                                <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
+                                </i>
+                            @else
+                                <a href="#" class="nav-link addRating" style="color:black;" id="needs_work">
+                                    <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
+                                    </i>
+                                </a>
+                            @endif
+                            <span class="text-info">100</span>
+                            &nbsp;
+
+                            <!-- vague -->
+                            @if($user_id==$idea->user_id)
                                 <i class="icon-puzzle" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
                                 </i>
-                            </a>
+                            @else
+                                <a href="#" class="nav-link addRating" style="color:black;" id="vague">
+                                    <i class="icon-puzzle" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
+                                    </i>
+                                </a>
+                            @endif
                             <span class="text-info">100</span>
                             &nbsp;
+
                             <!-- complex -->
-                            <a href="" class="nav-link" style="color:black;">
+                            @if($user_id==$idea->user_id)
                                 <i class="icon-user-unfollow" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
                                 </i>
-                            </a>
+                            @else
+                                <a href="#" class="nav-link addRating" style="color:black;" id="complex">
+                                    <i class="icon-user-unfollow" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
+                                    </i>
+                                </a>
+                            @endif
                             <span class="text-info">100</span>
-                            
                             &nbsp;
+
                             <!-- No of views -->
                             <i class="icon-user-following" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
                                 $list=App\Idea::getViewList($idea);
@@ -288,5 +309,43 @@ $('#btn-save').on('click',function(e){
             }
         });
     });
+
+$('.addRating').on('click',function(e)
+{ 
+    var idea_id=$("#idea_id").val();
+    console.log(idea_id);
+
+    var rating_type=$(this).attr('id');
+
+    console.log(rating_type);
+    
+    var formData = {
+        rating_type: $(this).attr('id'),
+        idea_id :$("#idea_id").val(),
+    }
+    var url = $('#url').val();
+    
+    var type = "GET";
+
+    $.ajax({
+        type: type,
+        url: url + '/ajax/addRatings/',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+        },
+        statusCode: 
+                {
+                    401: function()
+                    { 
+                        window.location.href =url+'/login';
+                    }
+                },
+        error: function (data) {
+            console.log('Error:', data);
+        }
+    });
+});
 </script>
 @endsection
