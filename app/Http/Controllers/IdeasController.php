@@ -154,22 +154,30 @@ class IdeasController extends Controller
                 $idea->views()->attach($user->id);    
             }
         }
+
+        $idea_rating = DB::table('idea_ratings')
+                           ->where('idea_id',$idea->id)
+                           ->where('user_id',$user->id)
+                           ->first();
         
-        return view('ideas.viewcomments',compact('idea'));
+        return view('ideas.viewcomments',compact('idea','idea_rating'));
     }
 
     public function addRatings(Request $request)
     {
         $user=Auth::user();
-        echo $request->idea_id;
         $idea=Idea::find($request->idea_id);
+        $idea_rating = DB::table('idea_ratings')
+                           ->where('idea_id',$idea->id)
+                           ->where('user_id',$user->id)
+                           ->value('rating_type');
+        if(!empty($idea_rating))
+        {
+            $idea->ratings()->detach($user->id);
+        }
 
-        $data = [
-        'idea' => $request->rating_type,
-        ];
         $idea->ratings()->attach($user->id,array('rating_type' => $request->rating_type));
-        
-        return \Response::json($data);
+        return \Response::json($idea);
     }
     
     public function dislike(Idea $idea)

@@ -15,8 +15,14 @@
 @section('content')
 @php
     $url= url("/");
-    $user_id=Auth::user()->id;                                               
+    $user_id=Auth::user()->id;
+    $rating_type="";
+    if(!empty($idea_rating))
+    {
+        $rating_type=$idea_rating->rating_type;
+    }                                            
 @endphp
+<meta name="_token1" content="{!! csrf_token() !!}" />
 <input type="hidden"  value="{{$url}}" id="url"/>
         <div class="card">
             <div class="card-header">
@@ -56,11 +62,25 @@
                                 </i>
                             @else
                                 <a href="#" class="nav-link addRating" style="color:black;" id="like">
-                                    <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
-                                    </i>
+                                    @if($rating_type=='like')
+                                        <i class="icon-like text-danger" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
+                                        </i>
+                                    @else
+                                        <i class="icon-like" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="Like" style="font-size:115%;">
+                                        </i>
+                                    @endif
                                 </a>
                             @endif
-                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title=""></span>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getList($idea,'like');
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp">
+                                {{App\Idea::getCount($idea,'like')}}
+                            </span>
                             &nbsp;
 
                             <!-- DisLike -->
@@ -69,11 +89,25 @@
                                 </i>
                             @else
                                 <a href="#" class="nav-link addRating" style="color:black;" id="dislike">
-                                    <i class="icon-dislike" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
-                                    </i>
+                                    @if($rating_type=='dislike')
+                                        <i class="icon-dislike text-danger" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
+                                        </i>
+                                    @else
+                                        <i class="icon-dislike" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="DisLike" style="font-size:115%;">
+                                        </i>
+                                    @endif
                                 </a>
                             @endif
-                            <span class="text-info">100</span>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getList($idea,'dislike');
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp">
+                                {{App\Idea::getCount($idea,'dislike')}}
+                            </span>
                             &nbsp;
 
                             <!-- Needs work -->
@@ -82,11 +116,25 @@
                                 </i>
                             @else
                                 <a href="#" class="nav-link addRating" style="color:black;" id="needs_work">
-                                    <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
-                                    </i>
+                                    @if($rating_type=='needs_work')
+                                        <i class="icon-pencil text-danger" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
+                                        </i>
+                                    @else
+                                        <i class="icon-pencil" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="needs work">
+                                        </i>
+                                    @endif
                                 </a>
                             @endif
-                            <span class="text-info">100</span>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getList($idea,'needs_work');
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp">
+                                {{App\Idea::getCount($idea,'needs_work')}}
+                            </span>
                             &nbsp;
 
                             <!-- vague -->
@@ -95,11 +143,25 @@
                                 </i>
                             @else
                                 <a href="#" class="nav-link addRating" style="color:black;" id="vague">
-                                    <i class="icon-puzzle" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
-                                    </i>
+                                    @if($rating_type=='vague')
+                                        <i class="icon-puzzle text-danger" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
+                                        </i>
+                                    @else
+                                        <i class="icon-puzzle" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="vague">
+                                        </i>
+                                    @endif
                                 </a>
                             @endif
-                            <span class="text-info">100</span>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getList($idea,'vague');
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp">
+                                {{App\Idea::getCount($idea,'vague')}}
+                            </span>
                             &nbsp;
 
                             <!-- complex -->
@@ -108,11 +170,25 @@
                                 </i>
                             @else
                                 <a href="#" class="nav-link addRating" style="color:black;" id="complex">
-                                    <i class="icon-user-unfollow" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
-                                    </i>
+                                    @if($rating_type=='complex')
+                                        <i class="icon-user-unfollow text-danger" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
+                                        </i>
+                                    @else
+                                        <i class="icon-user-unfollow" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="too complex">
+                                        </i>
+                                    @endif
                                 </a>
                             @endif
-                            <span class="text-info">100</span>
+                            <span class="text-info" id="tool-tip" data-html="true" data-toggle="tooltip" data-placement="bottom" title="@php
+                                $list=App\Idea::getList($idea,'complex');
+                                foreach($list as $user)
+                                {
+                                    echo $user->name;
+                                    echo "<br>";
+                                }
+                                @endphp">
+                                {{App\Idea::getCount($idea,'complex')}}
+                            </span>
                             &nbsp;
 
                             <!-- No of views -->
@@ -319,10 +395,19 @@ $('.addRating').on('click',function(e)
 
     console.log(rating_type);
     
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token1"]').attr('content')
+        }
+    })
+
+    e.preventDefault();
+
     var formData = {
         rating_type: $(this).attr('id'),
         idea_id :$("#idea_id").val(),
     }
+
     var url = $('#url').val();
     
     var type = "GET";
@@ -333,7 +418,7 @@ $('.addRating').on('click',function(e)
         data: formData,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            location.reload();
         },
         statusCode: 
                 {

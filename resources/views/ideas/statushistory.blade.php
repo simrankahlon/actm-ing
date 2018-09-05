@@ -75,7 +75,7 @@
                             <td>
                                 <div class="float-xs-left">
                                     <strong>
-                                        {{ $idea->updated_at->diffForHumans()}}
+                                        {{ $i_status->updated_at}}
                                     </strong>                                               
                                 </div>
                             </td>

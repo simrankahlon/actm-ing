@@ -95,10 +95,11 @@ class Idea extends Model
 		}
 	}
 
-	public static function getLikeCount($idea)
+	public static function getCount($idea,$rating_type)
 	{
-		$idea_count = DB::table('idea_like')
-						  ->where('idea_like.idea_id',$idea->id)
+		$idea_count = DB::table('idea_ratings')
+						  ->where('idea_ratings.idea_id',$idea->id)
+						  ->where('idea_ratings.rating_type',$rating_type)
 						  ->count();
 
 		return $idea_count;
@@ -113,11 +114,12 @@ class Idea extends Model
 		return $idea_count;
 	}
 
-	public static function getLikeList($idea)
+	public static function getList($idea,$rating_type)
 	{
-		$users = DB::table('idea_like')
-					->join('users','users.id','=','idea_like.user_id')
-					->where('idea_like.idea_id',$idea->id)
+		$users = DB::table('idea_ratings')
+					->join('users','users.id','=','idea_ratings.user_id')
+					->where('idea_ratings.idea_id',$idea->id)
+					->where('idea_ratings.rating_type',$rating_type)
 					->select('users.name')
 					->get();
 

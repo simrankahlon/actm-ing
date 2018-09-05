@@ -254,7 +254,12 @@ class ProjectsController extends Controller
                 $idea->current_status_id=$current_status_id;
                 $idea->update();
             }
-            return view('projects.idea',compact('idea','project'));
+
+            $idea_rating = DB::table('idea_ratings')
+                               ->where('idea_id',$idea->id)
+                               ->where('user_id',$user->id)
+                               ->first();
+            return view('projects.idea',compact('idea','project','idea_rating'));
         }
         else
         {
