@@ -76,7 +76,7 @@
                             <td>
                                 <div class="float-xs-left">
                                     <strong>
-                                        {{ $i_status->updated_at}}
+                                        {{ \Carbon\Carbon::parse($i_status->updated_at)->diffForHumans() }}
                                     </strong>                                               
                                 </div>
                             </td>

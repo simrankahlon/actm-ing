@@ -197,7 +197,7 @@ class IdeasController extends Controller
         $idea_status=DB::table('idea_status')
             ->where('idea_id',$idea->id)
             ->paginate(50);
-        
+
         return view('ideas.statushistory',compact('idea','idea_status'));
     }
 
